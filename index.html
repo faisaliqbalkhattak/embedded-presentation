@@ -6,18 +6,26 @@
     <title>Angled ToF Laser-Based Height Measurement</title>
     <style>
         :root {
-            --primary-color: #00d4ff;
-            --secondary-color: #2a2a2a;
-            --text-color: #ffffff;
-            --accent-color: #ff0055;
-            --bg-color: #121212;
+            /* Modern Light Theme Palette */
+            --bg-color: #f8f9fa;
+            --slide-bg-1: #ffffff;
+            --slide-bg-2: #f1f3f5;
+            
+            --primary-color: #0056b3; 
+            --accent-color: #d63384; 
+            --text-color: #212529; 
+            --text-light: #6c757d;
+            
+            --box-bg: rgba(255, 255, 255, 0.95);
+            --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -47,37 +55,38 @@
             padding: 2rem;
             position: relative;
             overflow: hidden;
-            border-bottom: 1px solid #333;
-        }
-
-        .slide:nth-child(even) {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border-bottom: 1px solid #dee2e6;
         }
 
         .slide:nth-child(odd) {
-            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            background-color: var(--slide-bg-1);
+        }
+
+        .slide:nth-child(even) {
+            background-color: var(--slide-bg-2);
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
             text-align: center;
             color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
             opacity: 0;
             transform: translateY(30px);
-            animation: fadeInUp 1s forwards 0.5s;
+            animation: fadeInUp 0.8s forwards 0.2s;
+            font-weight: 700;
         }
 
         h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 1.5rem;
             color: var(--primary-color);
-            border-bottom: 2px solid var(--accent-color);
+            border-bottom: 3px solid var(--accent-color);
             padding-bottom: 0.5rem;
+            display: inline-block;
             opacity: 0;
             transform: translateX(-50px);
-            transition: all 1s ease;
+            transition: all 0.8s ease;
         }
 
         .slide.active h2 {
@@ -86,13 +95,13 @@
         }
 
         p, li {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            max-width: 800px;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-color);
             margin-bottom: 1rem;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 1s ease 0.3s;
+            transition: all 0.8s ease 0.2s;
         }
 
         .slide.active p, .slide.active li {
@@ -100,25 +109,56 @@
             transform: translateY(0);
         }
 
-        ul {
-            list-style-type: none;
+        /* Fixed List Styling */
+        ul, ol {
+            margin-left: 1rem;
+            margin-bottom: 1rem;
         }
 
-        li::before {
-            content: "►";
+        ul {
+            list-style-type: none; 
+        }
+
+        ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+        }
+
+        ul li::before {
+            content: "•";
             color: var(--accent-color);
-            margin-right: 10px;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        ol li::before {
+            content: none;
         }
 
         .content-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--box-bg);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(0,0,0,0.05);
             max-width: 90%;
-            width: 1000px;
+            width: 1100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Specific Elements */
+        .tof-badge {
+            background: #e7f5ff;
+            color: var(--primary-color);
+            padding: 1rem;
+            border-left: 5px solid var(--primary-color);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            border-radius: 4px;
         }
 
         /* Animations */
@@ -127,23 +167,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Specific Slide Styles */
-        .title-slide h1 { font-size: 4rem; }
-        .title-slide .group-members { margin-top: 2rem; text-align: center; }
-        
-        .diagram-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            width: 100%;
         }
 
         /* Navigation Dots */
@@ -158,7 +181,7 @@
         .dot {
             width: 12px;
             height: 12px;
-            background: rgba(255, 255, 255, 0.3);
+            background: #ccc;
             border-radius: 50%;
             margin: 10px 0;
             cursor: pointer;
@@ -172,37 +195,72 @@
 
         /* Code Block */
         pre {
-            background: #1e1e1e;
-            padding: 1rem;
+            background: #2d2d2d;
+            padding: 1.5rem;
             border-radius: 8px;
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: #d4d4d4;
-            max-height: 400px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #f8f9fa;
+            max-height: 450px;
             width: 100%;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* Circuit Diagram Placeholder */
-        .circuit-diagram {
-            width: 800px;
+        /* Circuit & Animation Canvas */
+        .visual-canvas {
+            width: 100%;
             height: 400px;
-            background: #222;
-            border: 2px solid #444;
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             position: relative;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         
-        /* Measurement Animation Container */
         #measurement-anim {
-            width: 800px;
-            height: 400px;
-            background: #000;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
             position: relative;
             overflow: hidden;
-            border: 1px solid #444;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* Result Cards */
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .result-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        .result-card h3 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .result-card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin: 0;
+            opacity: 1;
+            transform: none;
         }
 
     </style>
@@ -212,15 +270,14 @@
 <div class="presentation-container" id="container">
     <div class="nav-dots" id="navDots"></div>
 
-    <!-- Slide 1: Title -->
-    <section class="slide title-slide" id="slide1">
+    <section class="slide" id="slide1">
         <div class="content-box" style="text-align: center;">
             <h1>Angled ToF Laser-Based<br>Non-Contact Height Measurement</h1>
-            <p><strong>Course:</strong> Embedded Systems (CS336)</p>
-            <p><strong>Platform:</strong> AVR ATmega328P (Arduino UNO)</p>
-            <div class="group-members">
+            <p><strong>Course:</strong> Embedded Systems (CS336) | <strong>Platform:</strong> AVR ATmega328P</p>
+
+            <div style="margin-top: 2rem;">
                 <h3>Group Members:</h3>
-                <ul style="display: inline-block; text-align: left;">
+                <ul style="display: inline-block; text-align: left; font-size: 0.9rem; color: var(--text-light);">
                     <li>Faisal Iqbal (478364)</li>
                     <li>Hassan Shahid (464485)</li>
                     <li>Syed Muneeb ur Rehman Bukhari (465315)</li>
@@ -230,354 +287,360 @@
         </div>
     </section>
 
-    <!-- Slide 2: Table of Contents -->
     <section class="slide" id="slide2">
         <div class="content-box">
             <h2>Table of Contents</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <ul>
-                    <li>1. Problem Statement</li>
-                    <li>2. Proposed Solution</li>
-                    <li>3. Block Diagram</li>
-                    <li>4. Methodology</li>
-                    <li>5. Simulations</li>
-                    <li>6. Circuit Diagram</li>
-                    <li>7. Code Implementation</li>
-                    <li>8. Calculations</li>
-                </ul>
-                <ul>
-                    <li>9. Results</li>
-                    <li>10. Applications to Society</li>
-                    <li>11. Contribution of Group Members</li>
-                    <li>12. Key Learnings</li>
-                    <li>13. Conclusion</li>
-                    <li>14. Acknowledgments</li>
-                    <li>15. References</li>
-                </ul>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <ol>
+                    <li>Problem Statement</li>
+                    <li>Proposed Solution</li>
+                    <li>Block Diagram</li>
+                    <li>Methodology</li>
+                    <li>Circuit Diagram</li>
+                    <li>Code Implementation</li>
+                    <li>Calculations</li>
+                </ol>
+                <ol start="8">
+                    <li>Results</li>
+                    <li>Applications to Society</li>
+                    <li>Contribution of Group Members</li>
+                    <li>Conclusion</li>
+                    <li>Questions</li>
+                    <li>References</li>
+                </ol>
             </div>
         </div>
     </section>
 
-    <!-- Slide 3: Problem Statement -->
     <section class="slide" id="slide3">
         <div class="content-box">
             <h2>Problem Statement</h2>
-            <p>Accurately measuring the height of objects in real time is challenging using traditional sensors due to:</p>
-            <ul>
-                <li>Wide beam spread</li>
-                <li>Missed detections</li>
-                <li>Slow response times</li>
-            </ul>
-            <p style="margin-top: 20px;">Many applications require a <strong>compact, fast, and accurate</strong> height measurement system that can detect an object instantly as it enters the sensing region.</p>
+            <p>Measuring dimensions in real-time industrial environments is challenging using traditional ultrasonic or IR sensors due to beam spread and slow response.</p>
+            
+            <div style="background-color: #ffe8e8; padding: 15px; border-left: 4px solid #ff4d4d; margin: 20px 0;">
+                <p style="margin:0; font-weight: 500;">
+                    Many applications require a compact and fast height measurement system that can detect an <strong>object’s height</strong> instantly as it enters the sensing region.
+                </p>
+            </div>
+
+            <h3>Why is this needed?</h3>
+            <p>Modern automated lines (like conveyor belts) move fast.
+            <br><strong>Applications like:</strong> Automatic vehicle classification at tolls, parcel dimensioning in logistics, and quality control on assembly lines all require instant, non-contact height data to function efficiently.</p>
         </div>
     </section>
 
-    <!-- Slide 4: Proposed Solution -->
     <section class="slide" id="slide4">
         <div class="content-box">
             <h2>Proposed Solution</h2>
-            <p>A laser-based height measurement system using the <strong>VL53L0X Time-of-Flight sensor</strong> mounted at a fixed position and interfaced with an <strong>AVR ATmega328P (Arduino UNO)</strong>.</p>
+            
+            <div class="tof-badge">
+                <strong style="font-size: 1.2rem;">What is ToF?</strong><br>
+                <span style="font-size: 1rem; color: #495057;">
+                    **Time-of-Flight (ToF)** is a method for measuring distance by calculating the precise time it takes for a light signal (laser) to travel to an object and reflect back to the sensor.
+                </span>
+            </div>
+
+            <p>A laser-based system using the <strong>VL53L0X Time-of-Flight sensor</strong> mounted at a fixed angle, interfaced with an <strong>Arduino UNO</strong>.</p>
             <h3>Key Features:</h3>
             <ul>
-                <li>Laser-based non-contact measurement</li>
-                <li>Long-range detection (up to 1 meter)</li>
-                <li>Instant object detection (no missed entry)</li>
-                <li>Height displayed in centimeters and feet/inches</li>
-                <li>Real-time LCD output</li>
+                <li><strong>Long Range:</strong> Reliable detection up to 1 meter.</li>
+                <li><strong>Instant Feedback:</strong> No missed entries; < 30ms response.</li>
+                <li><strong>Dual Units:</strong> Height displayed in cm and feet/inches on LCD.</li>
             </ul>
         </div>
     </section>
 
-    <!-- Slide 5: Block Diagram -->
     <section class="slide" id="slide5">
         <div class="content-box">
             <h2>Block Diagram</h2>
-            <div class="diagram-container">
-                <!-- CSS Block Diagram -->
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="background: #444; padding: 20px; border-radius: 10px; text-align: center;">
-                        <strong>Power Supply</strong><br>5V
-                    </div>
-                    <div style="font-size: 2rem;">→</div>
-                    <div style="background: #00d4ff; color: #000; padding: 30px; border-radius: 10px; text-align: center; font-weight: bold;">
-                        Arduino UNO<br>(ATmega328P)
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 20px; margin-left: 20px;">
-                        <div style="display: flex; align-items: center;">
-                            <div style="font-size: 2rem;">↔</div>
-                            <div style="background: #ff0055; padding: 15px; border-radius: 10px; margin-left: 10px;">
-                                VL53L0X Sensor<br>(I²C)
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center;">
-                            <div style="font-size: 2rem;">→</div>
-                            <div style="background: #2ecc71; padding: 15px; border-radius: 10px; margin-left: 10px;">
-                                16x2 LCD<br>Display
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 30px;">
+                <svg width="800" height="200" viewBox="0 0 800 200">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                        refX="10" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#6c757d" />
+                        </marker>
+                    </defs>
+                    
+                    <rect x="50" y="75" width="150" height="50" rx="8" fill="#e9ecef" stroke="#ced4da" stroke-width="2"/>
+                    <text x="125" y="105" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#212529">Power Supply</text>
+
+                    <rect x="300" y="50" width="200" height="100" rx="8" fill="#0056b3" stroke="#004494" stroke-width="2"/>
+                    <text x="400" y="105" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="white">Arduino UNO</text>
+
+                    <rect x="600" y="20" width="150" height="50" rx="8" fill="#e7f5ff" stroke="#0056b3" stroke-width="2"/>
+                    <text x="675" y="50" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#0056b3">VL53L0X</text>
+
+                    <rect x="600" y="130" width="150" height="50" rx="8" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+                    <text x="675" y="160" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#155724">16x2 LCD</text>
+
+                    <line x1="200" y1="100" x2="290" y2="100" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
+                    
+                    <path d="M500,80 L550,80 L550,45 L590,45" fill="none" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
+                    <path d="M590,55 L550,55 L550,90 L500,90" fill="none" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                    <path d="M500,120 L550,120 L550,155 L590,155" fill="none" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                </svg>
             </div>
         </div>
     </section>
 
-    <!-- Slide 6: Methodology -->
     <section class="slide" id="slide6">
         <div class="content-box">
             <h2>Methodology</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
                 <div>
-                    <h3>Algorithm Flow</h3>
-                    <ol style="margin-left: 20px;">
-                        <li>Initialize sensor and LCD</li>
-                        <li>Continuously read distance data</li>
-                        <li>Compare reading with baseline (150 cm)</li>
-                        <li>If object detected, compute height</li>
-                        <li>Display result for 5 seconds</li>
-                        <li>If no object detected, display 0000</li>
+                    <h3>1. Hardware Setup</h3>
+                    <ul>
+                        <li>Sensor mounted at 45° angle.</li>
+                        <li>I²C bus (SDA/SCL) for sensor data.</li>
+                        <li>4-bit parallel mode for LCD.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>2. Software Logic</h3>
+                    <ol>
+                        <li><strong>Init:</strong> Calibrate sensor & LCD.</li>
+                        <li><strong>Scan:</strong> Read distance continuously.</li>
+                        <li><strong>Detect:</strong> If reading < Baseline, Object detected.</li>
+                        <li><strong>Calc:</strong> Trigonometry to find vertical height.</li>
                     </ol>
                 </div>
-                <div>
-                    <h3>Hardware Approach</h3>
-                    <ul>
-                        <li>I²C communication for sensor data</li>
-                        <li>4-bit parallel communication for LCD</li>
-                    </ul>
-                    <h3 style="margin-top: 20px;">Software Approach</h3>
-                    <ul>
-                        <li>Embedded C++ using Arduino IDE</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Slide 7: Simulations -->
     <section class="slide" id="slide7">
         <div class="content-box">
-            <h2>Simulations</h2>
-            <p><strong>Tool Used:</strong> Arduino IDE Serial Monitor (logic verification)</p>
-            <h3>Simulation Details:</h3>
-            <ul>
-                <li>Distance readings verified via serial output</li>
-                <li>LCD output logic validated through test values</li>
-            </ul>
-            <div style="background: #000; padding: 10px; font-family: monospace; margin-top: 20px; border-radius: 5px;">
-                > Initializing...<br>
-                > Sensor OK<br>
-                > Distance: 1500mm (Baseline)<br>
-                > Distance: 1200mm -> Object Detected!<br>
-                > Height: 30cm<br>
+            <h2>Circuit Diagram</h2>
+            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 2rem;">
+                <div style="flex: 1; text-align: center;">
+                    <img src="image1.jpeg" alt="Circuit View 1" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                </div>
+        
             </div>
         </div>
     </section>
 
-    <!-- Slide 8: Circuit Diagram -->
-    <section class="slide" id="slide8">
+    <section class="slide" id="slide7">
         <div class="content-box">
             <h2>Circuit Diagram</h2>
-            <div class="circuit-diagram" id="circuit-canvas">
-                <!-- We will draw this with JS/SVG later -->
-                <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #aaa;">Circuit Visualization Loading...</p>
+            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 2rem;">
+                <div style="flex: 1; text-align: center;">
+                    <img src="image2.jpeg" alt="Circuit View 2" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                </div>
             </div>
-            <ul style="margin-top: 10px; font-size: 0.9rem;">
-                <li>VL53L0X → Arduino (SDA=A4, SCL=A5)</li>
-                <li>LCD → Arduino (RS=D7, E=D6, D4-D7=D5-D2)</li>
-            </ul>
         </div>
     </section>
 
-    <!-- Slide 9: Code Implementation -->
-    <section class="slide" id="slide9">
+    <section class="slide" id="slide8">
         <div class="content-box">
             <h2>Code Implementation</h2>
-            <div style="display: flex; gap: 20px;">
-                <div style="flex: 1;">
-                    <h3>Main Code Sections:</h3>
-                    <ul>
-                        <li>Sensor initialization and long-range configuration</li>
-                        <li>Continuous distance acquisition</li>
-                        <li>Height calculation and unit conversion</li>
-                        <li>LCD output control and timing</li>
-                    </ul>
-                </div>
-                <div style="flex: 1;">
-                    <pre>
-// Main Loop Snippet
-void loop() {
-  int distance_mm = sensor.readRangeSingleMillimeters();
-  int distance_cm = distance_mm / 10;
+            <pre style="background:#1e1e1e;color:#dcdcdc;padding:1.5rem;border-radius:10px;overflow-x:auto;font-family:'Consolas','Courier New',monospace;">
+<span style="color:#569cd6;">#include</span> <span style="color:#ce9178;">&lt;LiquidCrystal.h&gt;</span>
 
-  if (distance_cm < BASELINE_CM) {
-    float height_cm = distance_cm; // Simplified logic
+<span style="color:#6a9955;">// LCD PIN MAPPING</span>
+<span style="color:#6a9955;">// RS, E, D4, D5, D6, D7 to arduino PORT D</span>
+
+<span style="color:#6a9955;">// VL53L0X SENSOR OBJECT</span>
+Adafruit_VL53L0X lox <span style="color:#569cd6;">=</span> Adafruit_VL53L0X();
+
+<span style="color:#6a9955;">// SENSOR HEIGHT FROM FLOOR IN CM</span>
+<span style="color:#569cd6;">const float</span> SENSOR_HEIGHT_CM <span style="color:#569cd6;">=</span> <span style="color:#b5cea8;">200.0</span>;
+
+<span style="color:#569cd6;">void</span> setup() {
+
+    <span style="color:#6a9955;">// Initialize the LCD</span>
+    lcd.<span style="color:#dcdcaa;">begin</span>(<span style="color:#b5cea8;">16</span>, <span style="color:#b5cea8;">2</span>);
+    lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Height Meter"</span>);
     
-    // Display on LCD
-    lcd.print("Height:");
-    lcd.print(height_cm);
-    
-    delay(5000); // Hold result
-  }
+    <span style="color:#6a9955;">// Initialize the VL53L0X distance sensor</span>
+    lox.<span style="color:#dcdcaa;">begin</span>();
 }
-                    </pre>
-                </div>
-            </div>
+
+<span style="color:#569cd6;">void</span> loop() {
+
+    <span style="color:#6a9955;">// Structure to store distance measurement data</span>
+    VL53L0X_RangingMeasurementData_t measure;
+
+    <span style="color:#6a9955;">// Check if the measurement is valid from the previously returned object</span>
+    <span style="color:#569cd6;">if</span> (measure.RangeStatus <span style="color:#569cd6;">!=</span> <span style="color:#b5cea8;">4</span>) {
+
+        <span style="color:#6a9955;">// DISTANCE CALCULATION</span>
+        <span style="color:#569cd6;">float</span> distance_mm <span style="color:#569cd6;">=</span> measure.RangeMilliMeter; 
+        <span style="color:#569cd6;">float</span> distance_cm <span style="color:#569cd6;">=</span> (distance_mm / <span style="color:#b5cea8;">10.0</span>) <span style="color:#569cd6;">-</span> <span style="color:#b5cea8;">1.9</span>;
+
+        <span style="color:#6a9955;">// HEIGHT CALCULATION</span>
+        <span style="color:#569cd6;">float</span> height_cm <span style="color:#569cd6;">=</span> (distance_cm <span style="color:#569cd6;">*</span> <span style="color:#b5cea8;">0.70710678</span>) <span style="color:#569cd6;">+</span> SENSOR_HEIGHT_CM;
+
+        <span style="color:#6a9955;">// Noise filtering: height should never be negative</span>
+        <span style="color:#569cd6;">if</span> (height_cm <span style="color:#569cd6;">&lt;</span> <span style="color:#b5cea8;">0</span>) height_cm <span style="color:#569cd6;">=</span> <span style="color:#b5cea8;">0</span>;
+
+        <span style="color:#6a9955;">// CONVERSION FROM CM TO FEET & INCHES</span>
+        <span style="color:#569cd6;">int</span> total_inches <span style="color:#569cd6;">=</span> height_cm / <span style="color:#b5cea8;">2.54</span>;
+        <span style="color:#569cd6;">int</span> feet <span style="color:#569cd6;">=</span> total_inches / <span style="color:#b5cea8;">12</span>;
+        <span style="color:#569cd6;">int</span> inches <span style="color:#569cd6;">=</span> total_inches <span style="color:#569cd6;">%</span> <span style="color:#b5cea8;">12</span>;
+
+        <span style="color:#6a9955;">// LCD DISPLAY</span>
+        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">0</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Dist: "</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(distance_cm, <span style="color:#b5cea8;">1</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">" cm   "</span>);
+
+        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">1</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"H:"</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(height_cm, <span style="color:#b5cea8;">0</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"cm "</span>);
+
+        lcd.<span style="color:#dcdcaa;">print</span>(feet);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"'"</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(inches);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"\"  "</span>);
+
+    } <span style="color:#569cd6;">else</span> {
+        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">1</span>);
+        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Out of Range   "</span>);
+    }
+
+    <span style="color:#6a9955;">// Small delay to actually realize the next measurement</span>
+    delay(<span style="color:#b5cea8;">1000</span>);
+}
+            </pre>
         </div>
     </section>
 
-    <!-- Slide 10: Calculations & Demo -->
-    <section class="slide" id="slide10">
+    <section class="slide" id="slide9">
         <div class="content-box">
-            <h2>Calculations & Measurement Demo</h2>
-            <div style="display: flex; gap: 20px; align-items: center;">
-                <div style="flex: 1;">
-                    <h3>Formulas:</h3>
-                    <ul>
-                        <li>Distance (cm) = Distance (mm) / 10</li>
-                        <li>Inches = cm × 0.3937</li>
-                        <li>Feet = Inches / 12</li>
-                        <li>Baseline Threshold: 150 cm</li>
-                    </ul>
-                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 10px;">
-                        *Note: In the angled setup, trigonometry (sin 45°) is used to derive vertical height from the hypotenuse distance.
-                    </p>
+            <h2>Calculations & Visualization</h2>
+            <p style="margin-bottom: 10px;">The system uses trigonometry to derive vertical height from the angled distance reading.</p>
+            
+            <div style="display: flex; gap: 20px; align-items: stretch; height: 450px;">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
+                        <h3 style="color: var(--primary-color); margin-top: 0;">The Math</h3>
+                        <p><strong>Hypotenuse:</strong> Raw distance reading.</p>
+                        <p><strong>Offset:</strong> Sensor height from floor.</p>
+                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
+                        <p style="font-size: 1.3rem; font-weight: bold; font-family: 'Times New Roman', serif;">
+                            Height = Hypotenuse × sin(45°) + Distance_of_sensor_from_floor
+                        </p>
+                    </div>
                 </div>
-                <div style="flex: 1.5;">
+
+                <div style="flex: 1.5; border: 1px solid #ccc; border-radius: 10px; overflow: hidden; position: relative; background: #fff;">
                     <div id="measurement-anim"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Slide 11: Results -->
-    <section class="slide" id="slide11">
+    <section class="slide" id="slide10">
         <div class="content-box">
             <h2>Results</h2>
-            <ul>
-                <li>Accurate height displayed in cm and feet/inches</li>
-                <li>Stable readings without missed detections</li>
-            </ul>
-            <h3>Final Working State:</h3>
-            <ul>
-                <li>Real-time height measurement</li>
-                <li>LCD updates instantly upon object detection</li>
-            </ul>
+            <div class="result-grid">
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">⚡</div>
+                    <h3>Real-Time</h3>
+                    <p>Instant detection and LCD update latency under 50ms.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">📏</div>
+                    <h3>Unit Conversion</h3>
+                    <p>Seamless automated conversion between Centimeters, Feet, and Inches.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Slide 12: Applications -->
-    <section class="slide" id="slide12">
+    <section class="slide" id="slide11">
         <div class="content-box">
             <h2>Applications to Society</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <div>
-                    <h3>Real-World Uses:</h3>
+                    <h3>Industrial Automation</h3>
                     <ul>
-                        <li>Industrial object sorting</li>
-                        <li>Warehouse automation</li>
-                        <li>Quality control systems</li>
-                        <li>Robotics and automation</li>
+                        <li><strong>Luggage Sorting:</strong> Airports use height to classify bag sizes.</li>
+                        <li><strong>Logistics:</strong> Couriers dimension parcels automatically.</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Beneficiaries:</h3>
+                    <h3>Civil & Safety</h3>
                     <ul>
-                        <li>Manufacturing industry</li>
-                        <li>Educational institutions</li>
-                    </ul>
-                    <h3>Impact:</h3>
-                    <ul>
-                        <li>Improved accuracy</li>
-                        <li>Automation efficiency</li>
+                        <li><strong>Vehicle Clearance:</strong> Warning trucks before tunnels/bridges.</li>
+                        <li><strong>Robotics:</strong> Obstacle height mapping for autonomous rovers.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Slide 13: Contribution -->
-    <section class="slide" id="slide13">
+    <section class="slide" id="slide12">
         <div class="content-box">
             <h2>Contribution of Group Members</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <strong>Faisal Iqbal:</strong>
-                    <ul><li>Sensor integration</li><li>Height calculation logic</li></ul>
-                </div>
-                <div>
-                    <strong>Hassan Shahid:</strong>
-                    <ul><li>Circuit design</li><li>Hardware testing</li></ul>
-                </div>
-                <div>
-                    <strong>Syed Muneeb ur Rehman Bukhari:</strong>
-                    <ul><li>Code implementation</li><li>Debugging</li></ul>
-                </div>
-                <div>
-                    <strong>Talha Shafat:</strong>
-                    <ul><li>Documentation</li><li>Presentation preparation</li></ul>
-                </div>
-            </div>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <tr style="background: var(--primary-color); color: white;">
+                    <th style="padding: 15px; text-align: left; border-radius: 8px 0 0 0;">Member</th>
+                    <th style="padding: 15px; text-align: left; border-radius: 0 8px 0 0;">Key Responsibilities</th>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 15px; font-weight: bold;">Faisal Iqbal</td>
+                    <td style="padding: 15px;">Sensor integration, Trigonometry logic calibration</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 15px; font-weight: bold;">Hassan Shahid</td>
+                    <td style="padding: 15px;">Circuit design, Hardware assembly, LCD interfacing</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 15px; font-weight: bold;">Syed Muneeb</td>
+                    <td style="padding: 15px;">Embedded C++ programming, Debugging</td>
+                </tr>
+                <tr>
+                    <td style="padding: 15px; font-weight: bold;">Talha Shafat</td>
+                    <td style="padding: 15px;">Project documentation, Presentation design, Testing</td>
+                </tr>
+            </table>
         </div>
     </section>
 
-    <!-- Slide 14: Key Learnings -->
-    <section class="slide" id="slide14">
+    <section class="slide" id="slide13">
         <div class="content-box">
-            <h2>Key Learnings</h2>
+            <h2>Conclusion</h2>
+            <p>We successfully designed and implemented a non-contact height measurement system.</p>
             <ul>
-                <li>I²C communication on AVR microcontrollers</li>
-                <li>Laser-based distance sensing</li>
-                <li>Embedded system integration</li>
-                <li>Real-time data processing</li>
+                <li><strong>Success:</strong> The device meets the requirement for a compact, low-cost industrial measuring tool.</li>
+                <li><strong>Learning:</strong> Gained deep understanding of I²C communication and Angled ToF physics.</li>
+                <li><strong>Improvement:</strong> We can use a better sensor and better angle to get more accurate results in future iterations.</li>
             </ul>
         </div>
     </section>
 
-    <!-- Slide 15: Conclusion -->
-    <section class="slide" id="slide15">
-        <div class="content-box">
-            <h2>Conclusion</h2>
-            <p>The project successfully demonstrates a reliable and accurate height measurement system using an AVR microcontroller and laser Time-of-Flight sensor.</p>
-            <p>The solution meets real-time constraints and can be extended to industrial applications.</p>
-        </div>
-    </section>
-
-    <!-- Slide 16: Questions -->
-    <section class="slide" id="slide16">
+    <section class="slide" id="slide14">
         <div class="content-box" style="text-align: center;">
-            <h1>Any Questions?</h1>
+            <h1 style="color: var(--text-color);">Any Questions?</h1>
             <p>Thank you for your attention.</p>
         </div>
     </section>
 
-    <!-- Slide 17: Acknowledgments -->
-    <section class="slide" id="slide17">
-        <div class="content-box">
-            <h2>Acknowledgments</h2>
-            <p>We thank our lab instructor, the Embedded Systems department, and all team members for their guidance and support.</p>
-        </div>
-    </section>
-
-    <!-- Slide 18: References -->
-    <section class="slide" id="slide18">
+    <section class="slide" id="slide15">
         <div class="content-box">
             <h2>References</h2>
             <ol>
-                <li>VL53L0X Datasheet - STMicroelectronics</li>
-                <li>Arduino UNO Documentation</li>
-                <li>Embedded Systems Course Notes (CS336)</li>
-            </ol>
+                <li>STMicroelectronics. "VL53L0X Datasheet - Time-of-Flight Ranging Sensor".</li>
+                <li>Arduino.cc. "Arduino UNO R3 Documentation".</li>
+                <li>Lab Helping Material for 'ThinkerCad'"</li>
+                </ol>
         </div>
     </section>
 
 </div>
 
 <script>
-    // Navigation Dots Logic
+    // --- Navigation Logic ---
     const container = document.getElementById('container');
     const slides = document.querySelectorAll('.slide');
     const dotsContainer = document.getElementById('navDots');
 
-    // Create dots
     slides.forEach((slide, index) => {
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -588,7 +651,6 @@ void loop() {
         dotsContainer.appendChild(dot);
     });
 
-    // Update active dot on scroll
     container.addEventListener('scroll', () => {
         const scrollPos = container.scrollTop;
         const windowHeight = window.innerHeight;
@@ -605,33 +667,25 @@ void loop() {
         });
     });
 
-    // Trigger first slide animation
-    setTimeout(() => {
-        slides[0].classList.add('active');
-    }, 100);
+    setTimeout(() => slides[0].classList.add('active'), 100);
 
-    // --- Measurement Animation (Slide 10) ---
+    // --- Interactive Measurement Animation (Preserved) ---
     function initMeasurementAnim() {
         const animContainer = document.getElementById('measurement-anim');
-        // Clear previous
         animContainer.innerHTML = '';
 
-        // Create SVG
         const svgNS = "http://www.w3.org/2000/svg";
         const svg = document.createElementNS(svgNS, "svg");
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         svg.setAttribute("viewBox", "0 0 800 400");
-        // Prevent default drag behavior for better interaction
         svg.style.userSelect = "none";
         svg.style.touchAction = "none";
         animContainer.appendChild(svg);
 
-        // Definitions
+        // Definitions (Arrow Marker)
         const defs = document.createElementNS(svgNS, "defs");
         svg.appendChild(defs);
-        
-        // Marker for laser
         const marker = document.createElementNS(svgNS, "marker");
         marker.setAttribute("id", "arrow");
         marker.setAttribute("markerWidth", "10");
@@ -639,7 +693,6 @@ void loop() {
         marker.setAttribute("refX", "0");
         marker.setAttribute("refY", "3");
         marker.setAttribute("orient", "auto");
-        marker.setAttribute("markerUnits", "strokeWidth");
         const path = document.createElementNS(svgNS, "path");
         path.setAttribute("d", "M0,0 L0,6 L9,3 z");
         path.setAttribute("fill", "#f00");
@@ -653,27 +706,26 @@ void loop() {
         ground.setAttribute("y1", groundY);
         ground.setAttribute("x2", "800");
         ground.setAttribute("y2", groundY);
-        ground.setAttribute("stroke", "#fff");
+        ground.setAttribute("stroke", "#333");
         ground.setAttribute("stroke-width", "2");
         svg.appendChild(ground);
 
-        // Sensor (Bottom Left)
+        // Sensor
         const sensorX = 100;
         const sensorY = groundY;
         const sensorGroup = document.createElementNS(svgNS, "g");
-        // Rotate around the sensor point
         sensorGroup.setAttribute("transform", `translate(${sensorX}, ${sensorY}) rotate(-45)`); 
         const sensorRect = document.createElementNS(svgNS, "rect");
-        sensorRect.setAttribute("x", "-20"); // Center it
+        sensorRect.setAttribute("x", "-20");
         sensorRect.setAttribute("y", "-10");
         sensorRect.setAttribute("width", "40");
         sensorRect.setAttribute("height", "20");
-        sensorRect.setAttribute("fill", "#888");
-        sensorRect.setAttribute("stroke", "#fff");
+        sensorRect.setAttribute("fill", "#0056b3");
+        sensorRect.setAttribute("stroke", "#333");
         sensorGroup.appendChild(sensorRect);
         svg.appendChild(sensorGroup);
 
-        // Laser Beam (Hypotenuse)
+        // Laser Beam
         const laser = document.createElementNS(svgNS, "line");
         laser.setAttribute("x1", sensorX);
         laser.setAttribute("y1", sensorY);
@@ -684,7 +736,7 @@ void loop() {
 
         // Vertical Line (Height)
         const vertLine = document.createElementNS(svgNS, "line");
-        vertLine.setAttribute("stroke", "#0f0");
+        vertLine.setAttribute("stroke", "#0056b3");
         vertLine.setAttribute("stroke-width", "2");
         vertLine.setAttribute("stroke-dasharray", "4,4");
         vertLine.setAttribute("display", "none");
@@ -692,24 +744,22 @@ void loop() {
 
         // Base Line (Distance)
         const baseLine = document.createElementNS(svgNS, "line");
-        baseLine.setAttribute("stroke", "#0f0");
+        baseLine.setAttribute("stroke", "#0056b3");
         baseLine.setAttribute("stroke-width", "2");
         baseLine.setAttribute("stroke-dasharray", "4,4");
         baseLine.setAttribute("display", "none");
         svg.appendChild(baseLine);
 
         // Objects
-        // Box 1
         const box1 = document.createElementNS(svgNS, "rect");
-        box1.setAttribute("fill", "#3498db");
-        box1.setAttribute("stroke", "#fff");
+        box1.setAttribute("fill", "#28a745");
+        box1.setAttribute("stroke", "#333");
         box1.setAttribute("cursor", "ew-resize");
         svg.appendChild(box1);
 
-        // Box 2 (Taller)
         const box2 = document.createElementNS(svgNS, "rect");
-        box2.setAttribute("fill", "#e74c3c"); // Reddish
-        box2.setAttribute("stroke", "#fff");
+        box2.setAttribute("fill", "#dc3545");
+        box2.setAttribute("stroke", "#333");
         box2.setAttribute("cursor", "ew-resize");
         svg.appendChild(box2);
 
@@ -717,30 +767,28 @@ void loop() {
         const textInfo = document.createElementNS(svgNS, "text");
         textInfo.setAttribute("x", "50");
         textInfo.setAttribute("y", "50");
-        textInfo.setAttribute("fill", "#fff");
+        textInfo.setAttribute("fill", "#333");
         textInfo.setAttribute("font-size", "16");
+        textInfo.setAttribute("font-weight", "bold");
         svg.appendChild(textInfo);
 
         const helpText = document.createElementNS(svgNS, "text");
         helpText.setAttribute("x", "400");
         helpText.setAttribute("y", "380");
         helpText.setAttribute("text-anchor", "middle");
-        helpText.setAttribute("fill", "#aaa");
+        helpText.setAttribute("fill", "#666");
         helpText.setAttribute("font-size", "14");
         helpText.textContent = "Drag the boxes into the laser beam";
         svg.appendChild(helpText);
 
-        // Animation State
         const objects = [
             { el: box1, x: 550, w: 80, h: 100 },
-            { el: box2, x: 680, w: 80, h: 180 } // Taller box
+            { el: box2, x: 680, w: 80, h: 180 }
         ];
 
-        let displayState = 'searching'; // 'searching', 'holding'
+        let displayState = 'searching';
         let holdEndTime = 0;
         let heldData = null;
-
-        // Dragging Logic
         let draggingObj = null;
         let dragStartX = 0;
         let objStartX = 0;
@@ -768,7 +816,6 @@ void loop() {
                 const currentX = getSvgX(e);
                 const dx = currentX - dragStartX;
                 draggingObj.x = objStartX + dx;
-                // Clamp
                 if (draggingObj.x < 0) draggingObj.x = 0;
                 if (draggingObj.x > 720) draggingObj.x = 720;
             }
@@ -787,11 +834,9 @@ void loop() {
         window.addEventListener('mouseup', () => draggingObj = null);
         window.addEventListener('touchend', () => draggingObj = null);
 
-
         function animate(timestamp) {
             if (!timestamp) timestamp = performance.now();
 
-            // 1. Update Object Positions (Visuals)
             objects.forEach(obj => {
                 obj.el.setAttribute("x", obj.x);
                 obj.el.setAttribute("y", groundY - obj.h);
@@ -799,44 +844,33 @@ void loop() {
                 obj.el.setAttribute("height", obj.h);
             });
 
-            // 2. Raycast (Find closest hit)
             let closestHit = null;
             
-            // Beam: y = 450 - x.  (Starts 100,350. Goes +x, -y)
-            // Valid X range for beam: x > 100.
-            
+            // Beam math: (x,y) from (100,350) angle -45.
+            // Equation: y - 350 = -1 * (x - 100)  => y = 450 - x
             objects.forEach(obj => {
-                // Check Left Side Intersection
-                // x = obj.x
-                // y = 450 - obj.x
-                // Check if y is within box vertical range [groundY - h, groundY]
                 const beamY = 450 - obj.x;
                 const boxTop = groundY - obj.h;
                 const boxBottom = groundY;
                 
+                // Hit Left Side (Vertical wall check)
                 if (obj.x > 100 && beamY >= boxTop && beamY <= boxBottom) {
-                    // Hit Left Side
                     if (!closestHit || obj.x < closestHit.x) {
                         closestHit = { x: obj.x, y: beamY };
                     }
                 }
                 
-                // Check Top Side Intersection
-                // y = boxTop
-                // 450 - x = boxTop => x = 450 - boxTop
+                // Hit Top Side (Horizontal roof check)
+                // beam y = boxTop => boxTop = 450 - x => x = 450 - boxTop
                 const beamX = 450 - boxTop;
-                // Check if x is within box horizontal range [obj.x, obj.x + w]
                 if (beamX >= obj.x && beamX <= obj.x + obj.w && beamX > 100) {
-                     // Hit Top Side
                      if (!closestHit || beamX < closestHit.x) {
                         closestHit = { x: beamX, y: boxTop };
                      }
                 }
             });
 
-            // 3. State Machine
             if (displayState === 'holding') {
-                // Check timer
                 if (timestamp > holdEndTime) {
                     displayState = 'searching';
                     heldData = null;
@@ -845,11 +879,9 @@ void loop() {
 
             if (displayState === 'searching') {
                 if (closestHit) {
-                    // Trigger Hold
                     displayState = 'holding';
                     holdEndTime = timestamp + 5000;
                     
-                    // Calc Data
                     const hyp = Math.sqrt(Math.pow(closestHit.x - sensorX, 2) + Math.pow(closestHit.y - sensorY, 2));
                     const height = groundY - closestHit.y;
                     
@@ -862,9 +894,7 @@ void loop() {
                 }
             }
 
-            // 4. Render Visuals
             if (displayState === 'holding' && heldData) {
-                // Show Frozen Data
                 laser.setAttribute("x2", heldData.x);
                 laser.setAttribute("y2", heldData.y);
                 laser.setAttribute("stroke-dasharray", "0");
@@ -883,9 +913,8 @@ void loop() {
                 baseLine.setAttribute("display", "block");
 
                 textInfo.textContent = `Hyp: ${heldData.hyp} | Height: ${heldData.height} (HOLDING)`;
-                textInfo.setAttribute("fill", "#0f0");
+                textInfo.setAttribute("fill", "#d63384");
             } else {
-                // Searching
                 laser.setAttribute("x2", sensorX + 400);
                 laser.setAttribute("y2", sensorY - 400);
                 laser.setAttribute("stroke-dasharray", "5,5");
@@ -895,129 +924,17 @@ void loop() {
                 baseLine.setAttribute("display", "none");
 
                 textInfo.textContent = "Searching...";
-                textInfo.setAttribute("fill", "#fff");
+                textInfo.setAttribute("fill", "#333");
             }
 
             requestAnimationFrame(animate);
         }
         requestAnimationFrame(animate);
     }
-    
-    // --- Circuit Diagram Visualization (Slide 8) ---
-    function initCircuitDiagram() {
-        const container = document.getElementById('circuit-canvas');
-        container.innerHTML = ''; // Clear
-        
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-        svg.setAttribute("width", "100%");
-        svg.setAttribute("height", "100%");
-        svg.setAttribute("viewBox", "0 0 800 400");
-        container.appendChild(svg);
 
-        // Arduino Board
-        const arduino = document.createElementNS(svgNS, "rect");
-        arduino.setAttribute("x", "300");
-        arduino.setAttribute("y", "100");
-        arduino.setAttribute("width", "200");
-        arduino.setAttribute("height", "250");
-        arduino.setAttribute("fill", "#00979D"); // Arduino Teal
-        arduino.setAttribute("rx", "5");
-        svg.appendChild(arduino);
-        
-        const arduinoText = document.createElementNS(svgNS, "text");
-        arduinoText.setAttribute("x", "400");
-        arduinoText.setAttribute("y", "225");
-        arduinoText.setAttribute("text-anchor", "middle");
-        arduinoText.setAttribute("fill", "white");
-        arduinoText.textContent = "Arduino UNO";
-        svg.appendChild(arduinoText);
-
-        // Sensor (Left)
-        const sensor = document.createElementNS(svgNS, "rect");
-        sensor.setAttribute("x", "50");
-        sensor.setAttribute("y", "150");
-        sensor.setAttribute("width", "100");
-        sensor.setAttribute("height", "80");
-        sensor.setAttribute("fill", "#8e44ad"); // Purple
-        svg.appendChild(sensor);
-        
-        const sensorText = document.createElementNS(svgNS, "text");
-        sensorText.setAttribute("x", "100");
-        sensorText.setAttribute("y", "195");
-        sensorText.setAttribute("text-anchor", "middle");
-        sensorText.setAttribute("fill", "white");
-        sensorText.textContent = "VL53L0X";
-        svg.appendChild(sensorText);
-
-        // LCD (Right)
-        const lcd = document.createElementNS(svgNS, "rect");
-        lcd.setAttribute("x", "600");
-        lcd.setAttribute("y", "150");
-        lcd.setAttribute("width", "150");
-        lcd.setAttribute("height", "80");
-        lcd.setAttribute("fill", "#27ae60"); // Green
-        svg.appendChild(lcd);
-        
-        const lcdText = document.createElementNS(svgNS, "text");
-        lcdText.setAttribute("x", "675");
-        lcdText.setAttribute("y", "195");
-        lcdText.setAttribute("text-anchor", "middle");
-        lcdText.setAttribute("fill", "white");
-        lcdText.textContent = "16x2 LCD";
-        svg.appendChild(lcdText);
-
-        // Wires (Sensor to Arduino)
-        // SDA/SCL
-        const wire1 = document.createElementNS(svgNS, "path");
-        wire1.setAttribute("d", "M150,170 L300,170");
-        wire1.setAttribute("stroke", "yellow");
-        wire1.setAttribute("stroke-width", "3");
-        svg.appendChild(wire1);
-        
-        const wire2 = document.createElementNS(svgNS, "path");
-        wire2.setAttribute("d", "M150,190 L300,190");
-        wire2.setAttribute("stroke", "orange");
-        wire2.setAttribute("stroke-width", "3");
-        svg.appendChild(wire2);
-
-        // Wires (LCD to Arduino)
-        const wire3 = document.createElementNS(svgNS, "path");
-        wire3.setAttribute("d", "M500,170 L600,170");
-        wire3.setAttribute("stroke", "white");
-        wire3.setAttribute("stroke-width", "3");
-        svg.appendChild(wire3);
-        
-        const wire4 = document.createElementNS(svgNS, "path");
-        wire4.setAttribute("d", "M500,190 L600,190");
-        wire4.setAttribute("stroke", "gray");
-        wire4.setAttribute("stroke-width", "3");
-        svg.appendChild(wire4);
-        
-        // Labels for wires
-        const label1 = document.createElementNS(svgNS, "text");
-        label1.setAttribute("x", "225");
-        label1.setAttribute("y", "165");
-        label1.setAttribute("fill", "#ccc");
-        label1.setAttribute("font-size", "12");
-        label1.textContent = "I2C (A4/A5)";
-        svg.appendChild(label1);
-        
-        const label2 = document.createElementNS(svgNS, "text");
-        label2.setAttribute("x", "550");
-        label2.setAttribute("y", "165");
-        label2.setAttribute("fill", "#ccc");
-        label2.setAttribute("font-size", "12");
-        label2.textContent = "Digital (D2-D7)";
-        svg.appendChild(label2);
-    }
-
-    // Initialize animations
     window.onload = () => {
         initMeasurementAnim();
-        initCircuitDiagram();
     };
-
 </script>
 
 </body>

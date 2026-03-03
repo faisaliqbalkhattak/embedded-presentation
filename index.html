@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angled ToF Laser-Based Height Measurement</title>
+    <title>CaDiCaL SAT Solver – Formal Methods Presentation</title>
     <style>
         :root {
-            /* Modern Light Theme Palette */
             --bg-color: #f8f9fa;
             --slide-bg-1: #ffffff;
             --slide-bg-2: #f1f3f5;
-            
-            --primary-color: #0056b3; 
-            --accent-color: #d63384; 
-            --text-color: #212529; 
+            --primary-color: #0056b3;
+            --accent-color: #d63384;
+            --text-color: #212529;
             --text-light: #6c757d;
-            
             --box-bg: rgba(255, 255, 255, 0.95);
             --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
             --border-radius: 12px;
@@ -35,7 +32,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Scroll Snap Container */
         .presentation-container {
             height: 100vh;
             width: 100vw;
@@ -43,7 +39,6 @@
             scroll-snap-type: y mandatory;
         }
 
-        /* Slide Styles */
         .slide {
             height: 100vh;
             width: 100vw;
@@ -58,13 +53,8 @@
             border-bottom: 1px solid #dee2e6;
         }
 
-        .slide:nth-child(odd) {
-            background-color: var(--slide-bg-1);
-        }
-
-        .slide:nth-child(even) {
-            background-color: var(--slide-bg-2);
-        }
+        .slide:nth-child(odd) { background-color: var(--slide-bg-1); }
+        .slide:nth-child(even) { background-color: var(--slide-bg-2); }
 
         h1 {
             font-size: 3rem;
@@ -89,9 +79,13 @@
             transition: all 0.8s ease;
         }
 
-        .slide.active h2 {
-            opacity: 1;
-            transform: translateX(0);
+        .slide.active h2 { opacity: 1; transform: translateX(0); }
+
+        h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         p, li {
@@ -104,38 +98,22 @@
             transition: all 0.8s ease 0.2s;
         }
 
-        .slide.active p, .slide.active li {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .slide.active p, .slide.active li { opacity: 1; transform: translateY(0); }
 
-        /* Fixed List Styling */
-        ul, ol {
-            margin-left: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        ul {
-            list-style-type: none; 
-        }
-
-        ol {
-            list-style-type: decimal;
-            padding-left: 1.5rem;
-        }
+        ul, ol { margin-left: 1rem; margin-bottom: 1rem; }
+        ul { list-style-type: none; }
+        ol { list-style-type: decimal; padding-left: 1.5rem; }
 
         ul li::before {
-            content: "•";
+            content: "\2022";
             color: var(--accent-color);
             font-weight: bold;
             display: inline-block;
             width: 1em;
             margin-left: -1em;
         }
-        
-        ol li::before {
-            content: none;
-        }
+
+        ol li::before { content: none; }
 
         .content-box {
             background: var(--box-bg);
@@ -149,27 +127,28 @@
             z-index: 2;
         }
 
-        /* Specific Elements */
-        .tof-badge {
+        .info-badge {
             background: #e7f5ff;
             color: var(--primary-color);
-            padding: 1rem;
+            padding: 1rem 1.2rem;
             border-left: 5px solid var(--primary-color);
             margin-top: 1rem;
             margin-bottom: 1rem;
             text-align: left;
             border-radius: 4px;
+            font-size: 1.05rem;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .warning-badge {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 4px;
         }
 
-        /* Navigation Dots */
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
         .nav-dots {
             position: fixed;
             right: 20px;
@@ -183,7 +162,7 @@
             height: 12px;
             background: #ccc;
             border-radius: 50%;
-            margin: 10px 0;
+            margin: 6px 0;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -193,45 +172,19 @@
             transform: scale(1.3);
         }
 
-        /* Code Block */
         pre {
-            background: #2d2d2d;
+            background: #1e1e1e;
             padding: 1.5rem;
             border-radius: 8px;
             overflow-x: auto;
             font-family: 'Consolas', 'Courier New', monospace;
             font-size: 0.85rem;
-            color: #f8f9fa;
-            max-height: 450px;
+            color: #dcdcdc;
+            max-height: 500px;
             width: 100%;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* Circuit & Animation Canvas */
-        .visual-canvas {
-            width: 100%;
-            height: 400px;
-            background: #ffffff;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #measurement-anim {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-
-        /* Result Cards */
         .result-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -247,22 +200,55 @@
             text-align: center;
             transition: transform 0.3s;
         }
-        .result-card:hover {
-            transform: translateY(-5px);
-        }
-        .result-card h3 {
-            color: var(--text-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        .result-card p {
-            font-size: 1rem;
-            color: var(--text-light);
-            margin: 0;
-            opacity: 1;
-            transform: none;
-        }
+        .result-card:hover { transform: translateY(-5px); }
+        .result-card h3 { color: var(--text-color); font-size: 1.2rem; margin-bottom: 10px; }
+        .result-card p { font-size: 1rem; color: var(--text-light); margin: 0; opacity: 1; transform: none; }
 
+        .flow-step { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
+        .flow-number {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--primary-color); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .flow-text { font-size: 1.05rem; line-height: 1.5; opacity: 1 !important; transform: none !important; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .comparison-table th {
+            background: var(--primary-color); color: white;
+            padding: 14px 16px; text-align: left; font-size: 1.05rem;
+        }
+        .comparison-table th:first-child { border-radius: 8px 0 0 0; }
+        .comparison-table th:last-child { border-radius: 0 8px 0 0; }
+        .comparison-table td { padding: 12px 16px; border-bottom: 1px solid #dee2e6; font-size: 1rem; }
+        .comparison-table tr:hover { background: #f8f9fa; }
+
+        .demo-container {
+            background: #2d2d2d; border-radius: 10px; padding: 20px;
+            margin-top: 15px; color: #dcdcdc;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95rem; min-height: 360px; position: relative;
+        }
+        .demo-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; border-bottom: 1px solid #555; padding-bottom: 10px;
+        }
+        .demo-title { color: #61dafb; font-weight: bold; font-size: 1.1rem; }
+        .demo-btn {
+            background: var(--primary-color); color: white; border: none;
+            padding: 8px 18px; border-radius: 6px; cursor: pointer;
+            font-size: 0.9rem; font-family: inherit; transition: background 0.2s;
+        }
+        .demo-btn:hover { background: #004494; }
+        .demo-btn:disabled { background: #555; cursor: not-allowed; }
+        .demo-log { white-space: pre-wrap; line-height: 1.6; max-height: 280px; overflow-y: auto; }
+        .demo-log .step-conflict { color: #ff6b6b; }
+        .demo-log .step-learn { color: #ffd43b; }
+        .demo-log .step-decide { color: #69db7c; }
+        .demo-log .step-propagate { color: #a9e34b; }
+        .demo-log .step-backtrack { color: #e599f7; }
+        .demo-log .step-sat { color: #51cf66; font-weight: bold; }
+        .demo-log .step-info { color: #74c0fc; }
     </style>
 </head>
 <body>
@@ -270,14 +256,20 @@
 <div class="presentation-container" id="container">
     <div class="nav-dots" id="navDots"></div>
 
+    <!-- ============================================================ -->
+    <!-- SLIDE 1 – Title -->
+    <!-- ============================================================ -->
     <section class="slide" id="slide1">
         <div class="content-box" style="text-align: center;">
-            <h1>Angled ToF Laser-Based<br>Non-Contact Height Measurement</h1>
-            <p><strong>Course:</strong> Embedded Systems (CS336) | <strong>Platform:</strong> AVR ATmega328P</p>
+            <h1>CaDiCaL SAT Solver</h1>
+            <p style="font-size: 1.4rem; color: var(--text-light); margin-bottom: 0.5rem;">
+                A Modern CDCL-Based Satisfiability Solver
+            </p>
+            <p><strong>Course:</strong> Formal Methods | <strong>Version Analyzed:</strong> CaDiCaL 2.0 / 3.0</p>
 
             <div style="margin-top: 2rem;">
-                <h3>Group Members:</h3>
-                <ul style="display: inline-block; text-align: left; font-size: 0.9rem; color: var(--text-light);">
+                <h3>Group Members</h3>
+                <ul style="display: inline-block; text-align: left; font-size: 0.95rem; color: var(--text-light);">
                     <li>Faisal Iqbal (478364)</li>
                     <li>Hassan Shahid (464485)</li>
                     <li>Syed Muneeb ur Rehman Bukhari (465315)</li>
@@ -287,348 +279,706 @@
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SLIDE 2 – Table of Contents -->
+    <!-- ============================================================ -->
     <section class="slide" id="slide2">
         <div class="content-box">
             <h2>Table of Contents</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
                 <ol>
-                    <li>Problem Statement</li>
-                    <li>Proposed Solution</li>
-                    <li>Block Diagram</li>
-                    <li>Methodology</li>
-                    <li>Circuit Diagram</li>
-                    <li>Code Implementation</li>
-                    <li>Calculations</li>
+                    <li>What is CaDiCaL?</li>
+                    <li>CaDiCaL at a Glance</li>
+                    <li>What is SAT?</li>
+                    <li>Why SAT Matters</li>
+                    <li>The DPLL Algorithm</li>
+                    <li>CDCL: The Modern Approach</li>
+                    <li>Core CDCL Loop</li>
+                    <li>Key Data Structures</li>
+                    <li>Search Heuristics</li>
+                    <li>Clause Management</li>
                 </ol>
-                <ol start="8">
-                    <li>Results</li>
-                    <li>Applications to Society</li>
-                    <li>Contribution of Group Members</li>
-                    <li>Conclusion</li>
-                    <li>Questions</li>
-                    <li>References</li>
+                <ol start="11">
+                    <li>Preprocessing Techniques</li>
+                    <li>Inprocessing Techniques</li>
+                    <li>Interactive CDCL Demo</li>
+                    <li>Live Demo: Sudoku Solving</li>
+                    <li>C++ API Example</li>
+                    <li>Command-Line Usage</li>
+                    <li>Solver Comparison</li>
+                    <li>Competition Results</li>
+                    <li>What We Learned</li>
+                    <li>Future Directions</li>
+                    <li>Questions &amp; References</li>
                 </ol>
             </div>
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SLIDE 3 – What is CaDiCaL? -->
+    <!-- ============================================================ -->
     <section class="slide" id="slide3">
         <div class="content-box">
-            <h2>Problem Statement</h2>
-            <p>Measuring dimensions in real-time industrial environments is challenging using traditional ultrasonic or IR sensors due to beam spread and slow response.</p>
-            
-            <div style="background-color: #ffe8e8; padding: 15px; border-left: 4px solid #ff4d4d; margin: 20px 0;">
-                <p style="margin:0; font-weight: 500;">
-                    Many applications require a compact and fast height measurement system that can detect an <strong>object’s height</strong> instantly as it enters the sensing region.
-                </p>
+            <h2>What is CaDiCaL?</h2>
+            <p>
+                <strong>CaDiCaL</strong> (pronounced &#8220;radical&#8221;) is an open-source, state-of-the-art
+                CDCL-based SAT solver developed by <strong>Armin Biere</strong> and his team at the
+                University of Freiburg (formerly JKU Linz).
+            </p>
+
+            <div class="info-badge">
+                <strong>Design Philosophy:</strong> Build a CDCL solver that is <em>easy to understand and modify</em>,
+                while remaining competitive with the fastest solvers in the world.
             </div>
 
-            <h3>Why is this needed?</h3>
-            <p>Modern automated lines (like conveyor belts) move fast.
-            <br><strong>Applications like:</strong> Automatic vehicle classification at tolls, parcel dimensioning in logistics, and quality control on assembly lines all require instant, non-contact height data to function efficiently.</p>
+            <p>
+                It is the successor to the Lingeling solver family and has been published at
+                <strong>CAV 2024</strong> as a tool paper (LNCS vol.&nbsp;14681).
+            </p>
         </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- SLIDE 4 – CaDiCaL at a Glance -->
+    <!-- ============================================================ -->
     <section class="slide" id="slide4">
         <div class="content-box">
-            <h2>Proposed Solution</h2>
-            
-            <div class="tof-badge">
-                <strong style="font-size: 1.2rem;">What is ToF?</strong><br>
-                <span style="font-size: 1rem; color: #495057;">
-                    **Time-of-Flight (ToF)** is a method for measuring distance by calculating the precise time it takes for a light signal (laser) to travel to an object and reflect back to the sensor.
-                </span>
-            </div>
-
-            <p>A laser-based system using the <strong>VL53L0X Time-of-Flight sensor</strong> mounted at a fixed angle, interfaced with an <strong>Arduino UNO</strong>.</p>
-            <h3>Key Features:</h3>
+            <h2>CaDiCaL at a Glance</h2>
             <ul>
-                <li><strong>Long Range:</strong> Reliable detection up to 1 meter.</li>
-                <li><strong>Instant Feedback:</strong> No missed entries; < 30ms response.</li>
-                <li><strong>Dual Units:</strong> Height displayed in cm and feet/inches on LCD.</li>
+                <li><strong>Language:</strong> C++ (clean, well-documented)</li>
+                <li><strong>License:</strong> MIT</li>
+                <li><strong>Current Version:</strong> 3.0.0</li>
+                <li><strong>Lines of Code:</strong> ~40,000+</li>
+                <li><strong>Interface:</strong> IPASIR-2 compliant API</li>
+            </ul>
+
+            <div class="info-badge">
+                <strong>Key Achievement:</strong> Winner of multiple SAT Competition gold medals
+                across main and incremental tracks.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 5 – What is SAT? -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide5">
+        <div class="content-box">
+            <h2>What is SAT?</h2>
+            <p>
+                <strong>Boolean Satisfiability (SAT):</strong> Given a propositional formula in
+                Conjunctive Normal Form (CNF), determine if there exists a truth assignment
+                that makes the entire formula <em>true</em>.
+            </p>
+
+            <h3>CNF Example</h3>
+            <pre style="font-size: 0.95rem; padding: 1rem;">
+<span style="color:#6a9955;">c Example: 2 variables, 2 clauses</span>
+<span style="color:#569cd6;">p cnf 2 2</span>
+<span style="color:#dcdcaa;"> 1  2  0</span>       <span style="color:#6a9955;">&#8592; (x&#8321; &#8744; x&#8322;)</span>
+<span style="color:#dcdcaa;">-1     0</span>       <span style="color:#6a9955;">&#8592; (&#172;x&#8321;)</span>
+
+<span style="color:#6a9955;">Solution: x&#8321; = false, x&#8322; = true  &#10003;</span></pre>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 6 – Why SAT Matters -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide6">
+        <div class="content-box">
+            <h2>Why SAT Matters</h2>
+            <ul>
+                <li><strong>Hardware Verification:</strong> Checking circuit correctness</li>
+                <li><strong>Software Testing:</strong> Finding bugs via model checking</li>
+                <li><strong>AI Planning:</strong> Encoding planning problems as SAT</li>
+                <li><strong>Cryptanalysis:</strong> Breaking simple ciphers</li>
+                <li><strong>Scheduling:</strong> Constraint satisfaction in timetabling</li>
+            </ul>
+
+            <div class="warning-badge">
+                <p style="margin:0; font-weight: 500;">
+                    SAT is the <strong>first proven NP-complete problem</strong> (Cook-Levin theorem, 1971).
+                    Despite worst-case exponential complexity, modern solvers handle instances
+                    with <strong>millions of variables</strong>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 7 – The DPLL Algorithm -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide7">
+        <div class="content-box">
+            <h2>The DPLL Algorithm (1962)</h2>
+            <p>Davis-Putnam-Logemann-Loveland &#8212; the foundation of SAT solving.</p>
+            <ul>
+                <li><strong>Unit Propagation:</strong> If a clause has one unset literal, force it true.</li>
+                <li><strong>Pure Literal Elimination:</strong> If a variable appears with only one polarity, assign it.</li>
+                <li><strong>Splitting / Branching:</strong> Pick an unassigned variable, try both values.</li>
+                <li><strong>Chronological Backtracking:</strong> On conflict, undo the last decision.</li>
+            </ul>
+
+            <div class="warning-badge">
+                <p style="margin:0; font-size: 1.05rem;"><strong>Limitation:</strong> Repeats the same mistakes &#8212; no memory of past conflicts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 8 – CDCL: The Modern Approach -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide8">
+        <div class="content-box">
+            <h2>CDCL: The Modern Approach (1996+)</h2>
+            <p>Conflict-Driven Clause Learning (Marques-Silva &amp; Sakallah).</p>
+            <ul>
+                <li><strong>Conflict Analysis:</strong> On conflict, analyze <em>why</em> it happened.</li>
+                <li><strong>Clause Learning:</strong> Add a new &#8220;learned clause&#8221; to prevent repetition.</li>
+                <li><strong>Non-Chronological Backjumping:</strong> Jump back to the actual cause, skipping irrelevant decisions.</li>
+                <li><strong>Activity-Based Heuristics:</strong> Focus on variables involved in recent conflicts (VSIDS / EVSIDS).</li>
+            </ul>
+
+            <div class="info-badge">
+                <strong>Result:</strong> Orders of magnitude faster than DPLL on structured instances.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 9 – Core CDCL Loop -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide9">
+        <div class="content-box">
+            <h2>Core CDCL Loop</h2>
+            <p>The main loop that powers CaDiCaL and all modern SAT solvers.</p>
+
+            <div class="flow-step"><div class="flow-number">1</div><div class="flow-text"><strong>Decide:</strong> Pick an unassigned variable using EVSIDS scoring.</div></div>
+            <div class="flow-step"><div class="flow-number">2</div><div class="flow-text"><strong>Propagate:</strong> Apply BCP via two-watched-literal scheme.</div></div>
+            <div class="flow-step"><div class="flow-number">3</div><div class="flow-text"><strong>Conflict?</strong> If a clause becomes empty, a conflict is detected.</div></div>
+            <div class="flow-step"><div class="flow-number">4</div><div class="flow-text"><strong>Analyze:</strong> Trace the implication graph to find the 1-UIP cut.</div></div>
+            <div class="flow-step"><div class="flow-number">5</div><div class="flow-text"><strong>Learn &amp; Backjump:</strong> Add the learned clause, backtrack to assertion level.</div></div>
+            <div class="flow-step"><div class="flow-number">6</div><div class="flow-text"><strong>Restart:</strong> Periodically restart to escape unproductive regions.</div></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 10 – Key Data Structures -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide10">
+        <div class="content-box">
+            <h2>Key Data Structures</h2>
+            <ul>
+                <li><strong>Two-Watched Literals:</strong> Efficient unit propagation &#8212; only inspect a clause when a watched literal becomes false.</li>
+                <li><strong>Implication Graph:</strong> Tracks which assignments were forced by which clauses. Enables conflict analysis.</li>
+                <li><strong>EVSIDS Scores:</strong> Exponential decay activity scores. Variables in recent conflicts get higher priority.</li>
+                <li><strong>Trail:</strong> Stack of assignments with decision levels. Supports backjumping.</li>
+                <li><strong>Clause Database:</strong> Arena-based allocation for cache efficiency.</li>
             </ul>
         </div>
     </section>
 
-    <section class="slide" id="slide5">
-        <div class="content-box">
-            <h2>Block Diagram</h2>
-            <div style="width: 100%; display: flex; justify-content: center; margin-top: 30px;">
-                <svg width="800" height="200" viewBox="0 0 800 200">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
-                        refX="10" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#6c757d" />
-                        </marker>
-                    </defs>
-                    
-                    <rect x="50" y="75" width="150" height="50" rx="8" fill="#e9ecef" stroke="#ced4da" stroke-width="2"/>
-                    <text x="125" y="105" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#212529">Power Supply</text>
-
-                    <rect x="300" y="50" width="200" height="100" rx="8" fill="#0056b3" stroke="#004494" stroke-width="2"/>
-                    <text x="400" y="105" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="white">Arduino UNO</text>
-
-                    <rect x="600" y="20" width="150" height="50" rx="8" fill="#e7f5ff" stroke="#0056b3" stroke-width="2"/>
-                    <text x="675" y="50" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#0056b3">VL53L0X</text>
-
-                    <rect x="600" y="130" width="150" height="50" rx="8" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
-                    <text x="675" y="160" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#155724">16x2 LCD</text>
-
-                    <line x1="200" y1="100" x2="290" y2="100" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
-                    
-                    <path d="M590,55 L550,55 L550,90 L500,90" fill="none" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
-
-                    <path d="M500,120 L550,120 L550,155 L590,155" fill="none" stroke="#6c757d" stroke-width="3" marker-end="url(#arrowhead)"/>
-
-                </svg>
-            </div>
-        </div>
-    </section>
-
-    <section class="slide" id="slide6">
-        <div class="content-box">
-            <h2>Methodology</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-                <div>
-                    <h3>1. Hardware Setup</h3>
-                    <ul>
-                        <li>Sensor mounted at 45° angle.</li>
-                        <li>I²C bus (SDA/SCL) for sensor data.</li>
-                        <li>4-bit parallel mode for LCD.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>2. Software Logic</h3>
-                    <ol>
-                        <li><strong>Init:</strong> Calibrate sensor & LCD.</li>
-                        <li><strong>Scan:</strong> Read distance continuously.</li>
-                        <li><strong>Detect:</strong> If reading < Baseline, Object detected.</li>
-                        <li><strong>Calc:</strong> Trigonometry to find vertical height.</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="slide" id="slide7">
-        <div class="content-box">
-            <h2>Circuit Diagram</h2>
-            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 2rem;">
-                <div style="flex: 1; text-align: center;">
-                    <img src="image1.jpeg" alt="Circuit View 1" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                </div>
-        
-            </div>
-        </div>
-    </section>
-
-    <section class="slide" id="slide7">
-        <div class="content-box">
-            <h2>Circuit Diagram</h2>
-            <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 2rem;">
-                <div style="flex: 1; text-align: center;">
-                    <img src="image2.png" alt="Circuit View 2" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="slide" id="slide8">
-        <div class="content-box">
-            <h2>Code Implementation</h2>
-            <pre style="background:#1e1e1e;color:#dcdcdc;padding:1.5rem;border-radius:10px;overflow-x:auto;font-family:'Consolas','Courier New',monospace;">
-<span style="color:#569cd6;">#include</span> <span style="color:#ce9178;">&lt;LiquidCrystal.h&gt;</span>
-
-<span style="color:#6a9955;">// LCD PIN MAPPING</span>
-<span style="color:#6a9955;">// RS, E, D4, D5, D6, D7 to arduino PORT D</span>
-
-<span style="color:#6a9955;">// VL53L0X SENSOR OBJECT</span>
-Adafruit_VL53L0X lox <span style="color:#569cd6;">=</span> Adafruit_VL53L0X();
-
-<span style="color:#6a9955;">// SENSOR HEIGHT FROM FLOOR IN CM</span>
-<span style="color:#569cd6;">const float</span> SENSOR_HEIGHT_CM <span style="color:#569cd6;">=</span> <span style="color:#b5cea8;">200.0</span>;
-
-<span style="color:#569cd6;">void</span> setup() {
-
-    <span style="color:#6a9955;">// Initialize the LCD</span>
-    lcd.<span style="color:#dcdcaa;">begin</span>(<span style="color:#b5cea8;">16</span>, <span style="color:#b5cea8;">2</span>);
-    lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Height Meter"</span>);
-    
-    <span style="color:#6a9955;">// Initialize the VL53L0X distance sensor</span>
-    lox.<span style="color:#dcdcaa;">begin</span>();
-}
-
-<span style="color:#569cd6;">void</span> loop() {
-
-    <span style="color:#6a9955;">// Structure to store distance measurement data</span>
-    VL53L0X_RangingMeasurementData_t measure;
-
-    <span style="color:#6a9955;">// Check if the measurement is valid from the previously returned object</span>
-    <span style="color:#569cd6;">if</span> (measure.RangeStatus <span style="color:#569cd6;">!=</span> <span style="color:#b5cea8;">4</span>) {
-
-        <span style="color:#6a9955;">// DISTANCE CALCULATION</span>
-        <span style="color:#569cd6;">float</span> distance_mm <span style="color:#569cd6;">=</span> measure.RangeMilliMeter; 
-        <span style="color:#569cd6;">float</span> distance_cm <span style="color:#569cd6;">=</span> (distance_mm / <span style="color:#b5cea8;">10.0</span>) <span style="color:#569cd6;">-</span> <span style="color:#b5cea8;">1.9</span>;
-
-        <span style="color:#6a9955;">// HEIGHT CALCULATION</span>
-        <span style="color:#569cd6;">float</span> height_cm <span style="color:#569cd6;">=</span> (distance_cm <span style="color:#569cd6;">*</span> <span style="color:#b5cea8;">0.70710678</span>) <span style="color:#569cd6;">+</span> SENSOR_HEIGHT_CM;
-
-        <span style="color:#6a9955;">// Noise filtering: height should never be negative</span>
-        <span style="color:#569cd6;">if</span> (height_cm <span style="color:#569cd6;">&lt;</span> <span style="color:#b5cea8;">0</span>) height_cm <span style="color:#569cd6;">=</span> <span style="color:#b5cea8;">0</span>;
-
-        <span style="color:#6a9955;">// CONVERSION FROM CM TO FEET & INCHES</span>
-        <span style="color:#569cd6;">int</span> total_inches <span style="color:#569cd6;">=</span> height_cm / <span style="color:#b5cea8;">2.54</span>;
-        <span style="color:#569cd6;">int</span> feet <span style="color:#569cd6;">=</span> total_inches / <span style="color:#b5cea8;">12</span>;
-        <span style="color:#569cd6;">int</span> inches <span style="color:#569cd6;">=</span> total_inches <span style="color:#569cd6;">%</span> <span style="color:#b5cea8;">12</span>;
-
-        <span style="color:#6a9955;">// LCD DISPLAY</span>
-        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">0</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Dist: "</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(distance_cm, <span style="color:#b5cea8;">1</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">" cm   "</span>);
-
-        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">1</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"H:"</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(height_cm, <span style="color:#b5cea8;">0</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"cm "</span>);
-
-        lcd.<span style="color:#dcdcaa;">print</span>(feet);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"'"</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(inches);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"\"  "</span>);
-
-    } <span style="color:#569cd6;">else</span> {
-        lcd.<span style="color:#dcdcaa;">setCursor</span>(<span style="color:#b5cea8;">0</span>, <span style="color:#b5cea8;">1</span>);
-        lcd.<span style="color:#dcdcaa;">print</span>(<span style="color:#ce9178;">"Out of Range   "</span>);
-    }
-
-    <span style="color:#6a9955;">// Small delay to actually realize the next measurement</span>
-    delay(<span style="color:#b5cea8;">1000</span>);
-}
-            </pre>
-        </div>
-    </section>
-
-    <section class="slide" id="slide9">
-        <div class="content-box">
-            <h2>Calculations & Visualization</h2>
-            <p style="margin-bottom: 10px;">The system uses trigonometry to derive vertical height from the angled distance reading.</p>
-            
-            <div style="display: flex; gap: 20px; align-items: stretch; height: 450px;">
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
-                        <h3 style="color: var(--primary-color); margin-top: 0;">The Math</h3>
-                        <p><strong>Hypotenuse:</strong> Raw distance reading.</p>
-                        <p><strong>Offset:</strong> Sensor height from floor.</p>
-                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
-                        <p style="font-size: 1.3rem; font-weight: bold; font-family: 'Times New Roman', serif;">
-                            Height = Hypotenuse × sin(45°) + Distance_of_sensor_from_floor
-                        </p>
-                    </div>
-                </div>
-
-                <div style="flex: 1.5; border: 1px solid #ccc; border-radius: 10px; overflow: hidden; position: relative; background: #fff;">
-                    <div id="measurement-anim"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="slide" id="slide10">
-        <div class="content-box">
-            <h2>Results</h2>
-            <div class="result-grid">
-                <div class="result-card">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">⚡</div>
-                    <h3>Real-Time</h3>
-                    <p>Instant detection and LCD update latency under 50ms.</p>
-                </div>
-                <div class="result-card">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">📏</div>
-                    <h3>Unit Conversion</h3>
-                    <p>Seamless automated conversion between Centimeters, Feet, and Inches.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- ============================================================ -->
+    <!-- SLIDE 11 – Search Heuristics -->
+    <!-- ============================================================ -->
     <section class="slide" id="slide11">
         <div class="content-box">
-            <h2>Applications to Society</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <div>
-                    <h3>Industrial Automation</h3>
-                    <ul>
-                        <li><strong>Luggage Sorting:</strong> Airports use height to classify bag sizes.</li>
-                        <li><strong>Logistics:</strong> Couriers dimension parcels automatically.</li>
-                    </ul>
+            <h2>Search Heuristics</h2>
+            <p>What makes CaDiCaL&#8217;s search strategy stand out.</p>
+            <ul>
+                <li><strong>EVSIDS (Score-based):</strong> Exponential VSIDS with configurable decay factor (default: 0.95).</li>
+                <li><strong>Phase Saving:</strong> Remember last assigned value of each variable for faster convergence.</li>
+                <li><strong>Focused &amp; Stable Modes:</strong> Alternates between aggressive exploration and exploitation phases.</li>
+                <li><strong>Reluctant Doubling Restarts:</strong> Luby-style restart sequence in stable mode.</li>
+            </ul>
+
+            <div class="info-badge">
+                <strong>Configuration:</strong> CaDiCaL has 150+ tunable parameters, but ships with carefully optimized defaults.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 12 – Clause Management -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide12">
+        <div class="content-box">
+            <h2>Clause Management</h2>
+            <p>How CaDiCaL organizes and prunes its learned clause database.</p>
+            <ul>
+                <li><strong>Glue / LBD Score:</strong> Measures clause quality &#8212; lower glue = more useful. Tier&nbsp;1 (glue &#8804; 2), Tier&nbsp;2 (glue &#8804; 6), Tier&nbsp;3 (rest).</li>
+                <li><strong>Clause Reduction:</strong> Periodically delete low-quality learned clauses to keep the database lean.</li>
+                <li><strong>On-the-fly Subsumption (OTFS):</strong> Strengthen existing clauses during conflict analysis.</li>
+                <li><strong>Chronological Backtracking:</strong> Optionally avoid full backjumps to preserve useful assignments.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 13 – Preprocessing Techniques -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide13">
+        <div class="content-box">
+            <h2>Preprocessing Techniques</h2>
+            <p>Simplification applied <em>before</em> the search begins.</p>
+
+            <div class="result-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#9999;&#65039;</div>
+                    <h3>Bounded Variable Elimination</h3>
+                    <p>Resolve away variables when the resulting formula is smaller.</p>
                 </div>
-                <div>
-                    <h3>Civil & Safety</h3>
-                    <ul>
-                        <li><strong>Vehicle Clearance:</strong> Warning trucks before tunnels/bridges.</li>
-                        <li><strong>Robotics:</strong> Obstacle height mapping for autonomous rovers.</li>
-                    </ul>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128270;</div>
+                    <h3>Subsumption &amp; Strengthening</h3>
+                    <p>Remove clauses subsumed by shorter ones. Remove redundant literals.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128161;</div>
+                    <h3>Failed Literal Probing</h3>
+                    <p>Tentatively assign a literal; if it conflicts, the opposite must be true.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="slide" id="slide12">
+    <!-- ============================================================ -->
+    <!-- SLIDE 14 – Inprocessing Techniques -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide14">
         <div class="content-box">
-            <h2>Contribution of Group Members</h2>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-                <tr style="background: var(--primary-color); color: white;">
-                    <th style="padding: 15px; text-align: left; border-radius: 8px 0 0 0;">Member</th>
-                    <th style="padding: 15px; text-align: left; border-radius: 0 8px 0 0;">Key Responsibilities</th>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 15px; font-weight: bold;">Faisal Iqbal</td>
-                    <td style="padding: 15px;">Sensor integration, Trigonometry logic calibration</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 15px; font-weight: bold;">Hassan Shahid</td>
-                    <td style="padding: 15px;">Circuit design, Hardware assembly, LCD interfacing</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 15px; font-weight: bold;">Syed Muneeb</td>
-                    <td style="padding: 15px;">Embedded C++ programming, Debugging</td>
+            <h2>Inprocessing Techniques</h2>
+            <p>Simplification interleaved <em>during</em> the search &#8212; CaDiCaL&#8217;s key advantage.</p>
+
+            <div class="result-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128268;</div>
+                    <h3>Congruence Closure</h3>
+                    <p>Detect AND, XOR, ITE gate structures. Merge equivalent variables.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128736;&#65039;</div>
+                    <h3>SAT Sweeping</h3>
+                    <p>Detect equivalent variables via simulation + SAT sub-calls.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128260;</div>
+                    <h3>Bounded Variable Addition</h3>
+                    <p>Introduce new variables to reduce total literal occurrences.</p>
+                </div>
+            </div>
+
+            <div class="info-badge" style="margin-top: 15px;">
+                <strong>Key Insight:</strong> After a restart, CaDiCaL may run a round of BVE/subsumption before resuming CDCL search.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 15 – Interactive CDCL Demonstration -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide15">
+        <div class="content-box">
+            <h2>Interactive CDCL Demonstration</h2>
+            <p>Watch CDCL solve a small formula step-by-step. Click <strong>Step</strong> to advance or <strong>Auto</strong> to animate.</p>
+
+            <div class="demo-container">
+                <div class="demo-header">
+                    <div class="demo-title">CDCL Solver &#8212; (x&#8321; &#8744; x&#8322;) &#8743; (&#172;x&#8321; &#8744; x&#8323;) &#8743; (&#172;x&#8322; &#8744; &#172;x&#8323;) &#8743; (x&#8322; &#8744; x&#8323;)</div>
+                    <div>
+                        <button class="demo-btn" id="btnStep">Step</button>
+                        <button class="demo-btn" id="btnAuto" style="margin-left: 6px;">Auto</button>
+                        <button class="demo-btn" id="btnReset" style="margin-left: 6px; background: #6c757d;">Reset</button>
+                    </div>
+                </div>
+                <div class="demo-log" id="demoLog">
+<span class="step-info">Formula loaded: 3 variables, 4 clauses</span>
+<span class="step-info">Clauses: C1=(x&#8321; &#8744; x&#8322;)  C2=(&#172;x&#8321; &#8744; x&#8323;)  C3=(&#172;x&#8322; &#8744; &#172;x&#8323;)  C4=(x&#8322; &#8744; x&#8323;)</span>
+<span class="step-info">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</span>
+<span class="step-info">Ready. Click "Step" or "Auto" to begin solving...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 16 – Live Demo: Sudoku Solving -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide16">
+        <div class="content-box">
+            <h2>Live Demo: Solving a Sudoku Puzzle</h2>
+            <p>A 9&#215;9 Sudoku encoded as <strong>729 variables</strong> and <strong>3270 clauses</strong> &#8212; solved in <strong>0.03 seconds</strong>.</p>
+            <pre style="font-size:0.62rem;padding:1rem;max-height:500px;line-height:1.38;background:#1e1e1e;color:#d4d4d4;overflow-y:auto;">
+<span style="color:#55ff55;">faisaliqbal@DESKTOP-PM2DI4V</span><span style="color:#d4d4d4;">:</span><span style="color:#5599ff;">~/fm-sat/cadical</span><span style="color:#d4d4d4;">$ ./build/cadical sudoku_fixed.cnf</span>
+<span style="color:#5599ff;">c --- [ banner ] -------------------------------------------------------------</span>
+c
+<span style="color:#55ff55;">c CaDiCaL SAT Solver</span>
+<span style="color:#55ff55;">c Copyright (c) 2016-2025</span>
+<span style="color:#55ff55;">c A. Biere, M. Fleury, N. Froleyks, K. Fazekas, F. Pollitt, T. Faller</span>
+<span style="color:#55ff55;">c JKU Linz, University of Freiburg, TU Wien</span>
+c
+<span style="color:#d670d6;">c Version 3.0.0 7b99c07f0bcab5824a5a3ce62c7066554017f641</span>
+<span style="color:#d670d6;">c g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0 -Wall -Wextra -O3 -DNDEBUG</span>
+<span style="color:#d670d6;">c Fri Feb 27 15:51:18 PKT 2026 Linux DESKTOP-PM2DI4V 6.6.87.2-microsoft-standard-WSL2 x86_64</span>
+c
+<span style="color:#5599ff;">c --- [ parsing input ] ------------------------------------------------------</span>
+c
+<span style="color:#55ff55;">c reading DIMACS file from 'sudoku_fixed.cnf'</span>
+c opening file to read 'sudoku_fixed.cnf'
+<span style="color:#d670d6;">c found 'p cnf 729 3270' header</span>
+c parsed 3270 clauses in 0.00 seconds process time
+c
+<span style="color:#5599ff;">c --- [ options ] ------------------------------------------------------------</span>
+c
+c all options are set to their default value
+c
+<span style="color:#5599ff;">c --- [ solving ] ------------------------------------------------------------</span>
+c
+<span style="color:#d670d6;">c time measured in process time since initialization</span>
+c
+<span style="color:#e5c07b;">c   seconds  reduction conflicts       size tier2     variables</span>
+<span style="color:#e5c07b;">c          MB    restarts   redundant    glue  trail      remaining</span>
+<span style="color:#e5c07b;">c           level     rate       size/glu tier1 irredundant</span>
+c
+c <span style="color:#e5c07b;">*</span>  0.00  5  0 0   0  0    0    0 0.0 0 0 2 6  0% 3240 459 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">(</span>  0.00  5  0 0   0  0    0    0 0.0 0 0 2 6  0% 3240 459 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">.</span>  0.00  5  0 0   0  0    0    0 0.0 0 0 2 6  0% 2040 459 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">f</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1275 612 <span style="color:#55ff55;">84%</span>
+c <span style="color:#e5c07b;">e</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1144 461 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">s</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1144 461 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">P</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1144 461 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">)</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1144 461 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">{</span>  0.01  6  0 0   0  0    0    0 0.0 0 0 2 6  0% 1144 461 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">i</span>  0.01  6  9 0   0  2   64   29 1.6 4 3 2 6 37% 1144 460 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">i</span>  0.01  6 23 0  10  3  166   98 1.5 5 3 2 6 43% 1144 457 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">-</span>  0.01  6 27 1  33  4  300  174 1.5 6 4 2 6 45% 1130 457 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">-</span>  0.01  6 17 2  71  3  735  467 1.6 7 4 2 6 42% 1130 457 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">i</span>  0.01  6 17 2  77  3  766  495 1.6 7 4 2 6 42% 1130 456 <span style="color:#55ff55;">63%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 17 2  77  3  934  621 1.6 7 4 2 6 45% 1130 454 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 17 2  77  3  987  660 1.6 7 4 2 6 45% 1130 453 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">}</span>  0.02  6 17 2  77  2 1001  673 1.6 7 4 2 6 46% 1130 453 <span style="color:#55ff55;">62%</span>
+c <span style="color:#5599ff;">[</span>  0.02  6  0 2  77  0 1001  673 0.0 0 0 2 6  0% 1130 453 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">O</span>  0.02  6 15 2  77 16 1002  674 1.2 5 4 2 6 38% 1130 453 <span style="color:#55ff55;">62%</span>
+c <span style="color:#d670d6;">d</span>  0.02  6 19 2  77  1 1233  847 2.1 9 4 2 6 45% 1117 452 <span style="color:#55ff55;">62%</span>
+c
+<span style="color:#e5c07b;">c   seconds  reduction conflicts       size tier2     variables</span>
+<span style="color:#e5c07b;">c          MB    restarts   redundant    glue  trail      remaining</span>
+<span style="color:#e5c07b;">c           level     rate       size/glu tier1 irredundant</span>
+c
+c <span style="color:#d670d6;">t</span>  0.02  6 19 2  77  1 1233  846 2.1 9 4 2 6 45% 1117 452 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">-</span>  0.02  6 13 3  77  1 1413  845 1.9 8 4 2 6 44% 1117 452 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 11 3  77  1 1625  953 1.7 8 5 2 6 43% 1117 451 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">]</span>  0.02  6 12 3  77  1 1774 1054 1.7 8 5 2 6 43% 1117 451 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">{</span>  0.02  6 17 3  77  2 1774 1054 1.6 7 4 2 6 46% 1117 451 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 17 3  79  2 1967 1229 1.8 7 4 2 6 48% 1117 449 <span style="color:#55ff55;">62%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 17 3  79  2 2048 1287 1.8 7 4 2 6 48% 1117 448 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">i</span>  0.02  6 17 3  79  2 2068 1304 1.8 7 4 2 6 48% 1117 447 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">i</span>  0.03  6 15 3  79  2 2280 1432 1.8 7 4 2 6 48% 1117 446 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">i</span>  0.03  6 15 3  79  2 2314 1225 1.8 7 4 2 6 39% 1099 444 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">-</span>  0.03  6 15 4  79  2 2355 1090 1.8 7 4 2 6 42% 1093 444 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">}</span>  0.03  6 15 4  79  2 2379 1113 1.8 7 4 2 6 47% 1093 444 <span style="color:#55ff55;">61%</span>
+c <span style="color:#e5c07b;">1</span>  0.03  6 15 4  79  2 2379 1113 1.8 7 4 2 6 47% 1093 444 <span style="color:#55ff55;">61%</span>
+c
+<span style="color:#5599ff;">c --- [ result ] -------------------------------------------------------------</span>
+c
+<span style="color:#55ff55;font-weight:bold;">s SATISFIABLE</span>
+v -1 -2 -3 -4 5 -6 -7 -8 -9 -10 -11 12 -13 -14 -15 -16 -17 -18 -19 -20 -21 22
+v -23 -24 -25 -26 -27 -28 -29 -30 -31 -32 33 -34 -35 -36 -37 -38 -39 -40 -41
+v -42 43 -44 -45 -46 -47 -48 -49 -50 -51 -52 53 -54 -55 -56 -57 -58 -59 -60
+v -61 -62 63 64 -65 -66 -67 -68 -69 -70 -71 -72 -73 74 -75 -76 -77 -78 -79 -80
+v -81 -82 -83 -84 -85 -86 87 -88 -89 -90 -91 -92 -93 -94 -95 -96 97 -98 -99
+<span style="color:#888;">v  ... (729 variable assignments total) ...</span>
+v -717 718 -719 -720 -721 -722 -723 -724 -725 -726 -727 -728 729 0
+c
+<span style="color:#5599ff;">c --- [ run-time profiling ] -------------------------------------------------</span>
+c
+<span style="color:#d670d6;">c process time taken by individual solving procedures</span>
+<span style="color:#d670d6;">c (percentage relative to process time for solving)</span>
+c
+c         0.02    62.70% search
+c         0.01    40.48% unstable
+c         0.01    33.54% simplify
+c         0.01    33.20% preprocess
+c         0.01    20.89% stable
+c         0.00    14.87% sweep
+c         0.00     6.37% parse
+c         0.00     6.33% fastelim
+c         0.00     3.93% factor
+c         0.00     3.18% congruence
+c         0.00     2.43% subsume
+c         0.00     0.99% backbone
+c         0.00     0.63% lucky
+c         0.00     0.09% probe
+c   ====================================
+c         0.02    90.03% solve
+c
+<span style="color:#d670d6;">c last line shows process time for solving</span>
+<span style="color:#d670d6;">c (percentage relative to total process time)</span>
+c
+<span style="color:#5599ff;">c --- [ statistics ] ---------------------------------------------------------</span>
+c
+c chronological:              728       30.60 %  of conflicts
+c conflicts:                 2379    97268.79    per second
+c backbone:                  6524      739.68 %  of vars
+c decisions:                 4529   185174.59    per second
+c eliminated:                 151       17.12 %  of all variables
+c factored:                   153       34.23 %  of variables
+c fixed:                      286       32.43 %  of all variables
+c learned:                   2303       96.81 %  per conflict
+c minimized:                    0        0.00 %  learned literals
+c shrunken:                  9043       32.34 %  learned literals
+c otfs:                        39        1.64 %  of conflict
+c propagations:             75721        3.10 M  per second
+c reduced:                    285       11.98 %  per conflict
+c restarts:                    79       30.11    interval
+c stabilizing:                  1       32.20 %  of conflicts
+c substituted:                  1        0.11 %  of all variables
+c subsumed:                   637        8.81 %  of all clauses
+c strengthened:               153        2.12 %  of all clauses
+c ticks:                   704277        9.76    propagation
+c weakened:                   712        4.33    average size
+c congruence:                   1     2379.00    interval
+c
+<span style="color:#d670d6;">c seconds are measured in process time for solving</span>
+c
+<span style="color:#5599ff;">c --- [ glue usage ] ---------------------------------------------------------</span>
+c
+<span style="color:#55ff55;">c focused glue 2 used 1099 clauses 29.42% accumulated 51.11% tier1</span>
+<span style="color:#55ff55;">c focused glue 3 used 833 clauses 22.30% accumulated 73.41% tier2</span>
+c
+<span style="color:#55ff55;">c stable glue 2 used 681 clauses 31.09% accumulated 40.22% tier1</span>
+<span style="color:#55ff55;">c stable glue 3 used 512 clauses 23.37% accumulated 63.60%</span>
+<span style="color:#55ff55;">c stable glue 4 used 333 clauses 15.20% accumulated 78.81%</span>
+<span style="color:#55ff55;">c stable glue 5 used 201 clauses 9.178% accumulated 87.99%</span>
+<span style="color:#55ff55;">c stable glue 6 used 112 clauses 5.114% accumulated 93.10% tier2</span>
+c
+<span style="color:#5599ff;">c --- [ resources ] ----------------------------------------------------------</span>
+c
+c total process time since initialization:      0.03    seconds
+c total real time since initialization:         0.03    seconds
+c maximum resident set size of process:         5.88    MB
+c
+<span style="color:#5599ff;">c --- [ shutting down ] ------------------------------------------------------</span>
+c
+<span style="color:#55ff55;">c exit 10</span></pre>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 17 – C++ API Example -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide17">
+        <div class="content-box">
+            <h2>C++ API Example</h2>
+            <p>CaDiCaL provides a clean, IPASIR-compliant C++ API.</p>
+
+            <pre style="font-size: 0.85rem;">
+<span style="color:#569cd6;">#include</span> <span style="color:#ce9178;">"cadical.hpp"</span>
+
+<span style="color:#569cd6;">int</span> main() {
+  CaDiCaL::Solver solver;
+
+  <span style="color:#6a9955;">// Add clause (x&#8321; &#8744; x&#8322;)</span>
+  solver.<span style="color:#dcdcaa;">add</span>(<span style="color:#b5cea8;">1</span>);
+  solver.<span style="color:#dcdcaa;">add</span>(<span style="color:#b5cea8;">2</span>);
+  solver.<span style="color:#dcdcaa;">add</span>(<span style="color:#b5cea8;">0</span>);  <span style="color:#6a9955;">// terminate clause</span>
+
+  <span style="color:#6a9955;">// Add clause (&#172;x&#8321;)</span>
+  solver.<span style="color:#dcdcaa;">add</span>(<span style="color:#b5cea8;">-1</span>);
+  solver.<span style="color:#dcdcaa;">add</span>(<span style="color:#b5cea8;">0</span>);
+
+  <span style="color:#569cd6;">int</span> res = solver.<span style="color:#dcdcaa;">solve</span>();
+  <span style="color:#6a9955;">// res == 10 &#8594; SATISFIABLE</span>
+
+  <span style="color:#569cd6;">int</span> v1 = solver.<span style="color:#dcdcaa;">val</span>(<span style="color:#b5cea8;">1</span>); <span style="color:#6a9955;">// -1 (false)</span>
+  <span style="color:#569cd6;">int</span> v2 = solver.<span style="color:#dcdcaa;">val</span>(<span style="color:#b5cea8;">2</span>); <span style="color:#6a9955;">//  2 (true)</span>
+
+  <span style="color:#569cd6;">return</span> <span style="color:#b5cea8;">0</span>;
+}</pre>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 18 – Command-Line Usage -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide18">
+        <div class="content-box">
+            <h2>Command-Line Usage</h2>
+            <p>Build and run CaDiCaL from the terminal.</p>
+
+            <pre style="font-size: 0.85rem;">
+<span style="color:#6a9955;"># Build CaDiCaL</span>
+<span style="color:#dcdcaa;">$</span> ./configure <span style="color:#569cd6;">&&</span> make
+
+<span style="color:#6a9955;"># Solve a DIMACS CNF file</span>
+<span style="color:#dcdcaa;">$</span> ./build/cadical example.cnf
+<span style="color:#ce9178;">s SATISFIABLE</span>
+<span style="color:#ce9178;">v 1 -2 0</span>
+
+<span style="color:#6a9955;"># Generate DRAT proof</span>
+<span style="color:#dcdcaa;">$</span> ./build/cadical input.cnf proof.drat
+
+<span style="color:#6a9955;"># Incremental solving via IPASIR</span>
+<span style="color:#dcdcaa;">$</span> solver.<span style="color:#dcdcaa;">assume</span>(<span style="color:#b5cea8;">3</span>);
+<span style="color:#dcdcaa;">$</span> solver.<span style="color:#dcdcaa;">solve</span>();   <span style="color:#6a9955;">// under assumption x&#8323; = true</span>
+<span style="color:#dcdcaa;">$</span> solver.<span style="color:#dcdcaa;">failed</span>(<span style="color:#b5cea8;">3</span>); <span style="color:#6a9955;">// check if x&#8323; in unsat core</span></pre>
+
+            <div class="info-badge" style="margin-top: 15px;">
+                <strong>Return Codes:</strong> <code>10</code> = SATISFIABLE, <code>20</code> = UNSATISFIABLE, <code>0</code> = UNKNOWN.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 19 – Solver Comparison -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide19">
+        <div class="content-box">
+            <h2>Solver Comparison</h2>
+            <p>How CaDiCaL compares to other leading SAT solvers.</p>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>CaDiCaL</th>
+                    <th>MiniSat</th>
+                    <th>Kissat</th>
+                    <th>Glucose</th>
                 </tr>
                 <tr>
-                    <td style="padding: 15px; font-weight: bold;">Talha Shafat</td>
-                    <td style="padding: 15px;">Project documentation, Presentation design, Testing</td>
+                    <td><strong>Inprocessing</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">Yes (full)</td>
+                    <td>No</td>
+                    <td style="color: #28a745;">Yes</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><strong>Congruence Closure</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">Yes</td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><strong>Incremental API</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">IPASIR-2</td>
+                    <td>Basic</td>
+                    <td>No</td>
+                    <td>Limited</td>
+                </tr>
+                <tr>
+                    <td><strong>Proof Logging</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">DRAT / LRAT / FRAT</td>
+                    <td>DRAT</td>
+                    <td>DRAT</td>
+                    <td>DRAT</td>
+                </tr>
+                <tr>
+                    <td><strong>Code Readability</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">Excellent</td>
+                    <td style="color: #28a745;">Excellent</td>
+                    <td>Moderate</td>
+                    <td>Moderate</td>
+                </tr>
+                <tr>
+                    <td><strong>Focused/Stable Modes</strong></td>
+                    <td style="color: #28a745; font-weight:bold;">Yes</td>
+                    <td>No</td>
+                    <td style="color: #28a745;">Yes</td>
+                    <td>No</td>
                 </tr>
             </table>
         </div>
     </section>
 
-    <section class="slide" id="slide13">
+    <!-- ============================================================ -->
+    <!-- SLIDE 20 – Competition Results -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide20">
         <div class="content-box">
-            <h2>Conclusion</h2>
-            <p>We successfully designed and implemented a non-contact height measurement system.</p>
+            <h2>Competition Results &amp; Impact</h2>
+
+            <div class="result-grid">
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#127942;</div>
+                    <h3>SAT Competition Winner</h3>
+                    <p>Multiple gold medals across main and incremental tracks.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128218;</div>
+                    <h3>CAV 2024 Publication</h3>
+                    <p>Tool paper at the premier formal verification conference.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128295;</div>
+                    <h3>Widely Integrated</h3>
+                    <p>Used inside SMT solvers, model checkers, and proof systems.</p>
+                </div>
+                <div class="result-card">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">&#128187;</div>
+                    <h3>Millions of Variables</h3>
+                    <p>Routinely solves industrial instances at massive scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 21 – What We Learned -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide21">
+        <div class="content-box">
+            <h2>What We Learned</h2>
             <ul>
-                <li><strong>Success:</strong> The device meets the requirement for a compact, low-cost industrial measuring tool.</li>
-                <li><strong>Learning:</strong> Gained deep understanding of I²C communication and Angled ToF physics.</li>
-                <li><strong>Improvement:</strong> We can use a better sensor and better angle to get more accurate results in future iterations.</li>
+                <li><strong>CDCL&#8217;s Power:</strong> Clause learning transforms exponential backtracking into practical solving for structured problems.</li>
+                <li><strong>Engineering Matters:</strong> Cache-efficient data structures (arena allocation, watched literals) are crucial for performance.</li>
+                <li><strong>Inprocessing is Key:</strong> Interleaving simplification with search yields significant speedups over pure CDCL.</li>
+                <li><strong>Clean Code Wins:</strong> CaDiCaL proves that readability and performance are not mutually exclusive.</li>
+            </ul>
+
+            <div class="info-badge">
+                <strong>Takeaway:</strong> CaDiCaL exemplifies how decades of SAT research converge into a solver that
+                balances theoretical soundness, engineering excellence, and practical impact.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 22 – Future Directions -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide22">
+        <div class="content-box">
+            <h2>Future Directions</h2>
+            <ul>
+                <li><strong>Parallelism:</strong> CaDiCaL is single-threaded &#8212; portfolio/clause-sharing parallelism could help.</li>
+                <li><strong>Machine Learning:</strong> ML-guided branching heuristics could adapt to specific problem families.</li>
+                <li><strong>Parity / Cardinality:</strong> Native support for XOR/cardinality constraints (partially present but limited).</li>
+                <li><strong>Hybrid Approaches:</strong> Combining CDCL with local search (SLS) for satisfiable instances.</li>
             </ul>
         </div>
     </section>
 
-    <section class="slide" id="slide14">
+    <!-- ============================================================ -->
+    <!-- SLIDE 23 – Questions & References -->
+    <!-- ============================================================ -->
+    <section class="slide" id="slide23">
         <div class="content-box" style="text-align: center;">
             <h1 style="color: var(--text-color);">Any Questions?</h1>
-            <p>Thank you for your attention.</p>
-        </div>
-    </section>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Thank you for your attention.</p>
 
-    <section class="slide" id="slide15">
-        <div class="content-box">
-            <h2>References</h2>
-            <ol>
-                <li>STMicroelectronics. "VL53L0X Datasheet - Time-of-Flight Ranging Sensor".</li>
-                <li>Arduino.cc. "Arduino UNO R3 Documentation".</li>
-                <li>Lab Helping Material for 'ThinkerCad'"</li>
+            <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <h3>References</h3>
+                <ol style="font-size: 0.95rem;">
+                    <li>Biere, A. et al. &#8220;CaDiCaL 2.0.&#8221; <em>Proc. CAV 2024</em>, LNCS 14681, pp. 133&#8211;152, Springer.</li>
+                    <li>Marques-Silva, J.P. &amp; Sakallah, K.A. &#8220;GRASP.&#8221; <em>IEEE Trans. Computers</em>, 1999.</li>
+                    <li>E&#233;n, N. &amp; S&#246;rensson, N. &#8220;An Extensible SAT-solver.&#8221; <em>SAT 2003</em>, LNCS 2919.</li>
+                    <li>Audemard, G. &amp; Simon, L. &#8220;Predicting Learnt Clauses Quality.&#8221; <em>IJCAI 2009</em>.</li>
+                    <li>CaDiCaL GitHub: <a href="https://github.com/arminbiere/cadical" target="_blank" style="color: var(--primary-color);">github.com/arminbiere/cadical</a></li>
+                    <li>SAT Competition: <a href="https://satcompetition.github.io/" target="_blank" style="color: var(--primary-color);">satcompetition.github.io</a></li>
                 </ol>
+            </div>
         </div>
     </section>
 
@@ -668,272 +1018,84 @@ Adafruit_VL53L0X lox <span style="color:#569cd6;">=</span> Adafruit_VL53L0X();
 
     setTimeout(() => slides[0].classList.add('active'), 100);
 
-    // --- Interactive Measurement Animation (Preserved) ---
-    function initMeasurementAnim() {
-        const animContainer = document.getElementById('measurement-anim');
-        animContainer.innerHTML = '';
+    // --- Interactive CDCL Demo ---
+    (function() {
+        const log = document.getElementById('demoLog');
+        const btnStep = document.getElementById('btnStep');
+        const btnAuto = document.getElementById('btnAuto');
+        const btnReset = document.getElementById('btnReset');
 
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-        svg.setAttribute("width", "100%");
-        svg.setAttribute("height", "100%");
-        svg.setAttribute("viewBox", "0 0 800 400");
-        svg.style.userSelect = "none";
-        svg.style.touchAction = "none";
-        animContainer.appendChild(svg);
-
-        // Definitions (Arrow Marker)
-        const defs = document.createElementNS(svgNS, "defs");
-        svg.appendChild(defs);
-        const marker = document.createElementNS(svgNS, "marker");
-        marker.setAttribute("id", "arrow");
-        marker.setAttribute("markerWidth", "10");
-        marker.setAttribute("markerHeight", "10");
-        marker.setAttribute("refX", "0");
-        marker.setAttribute("refY", "3");
-        marker.setAttribute("orient", "auto");
-        const path = document.createElementNS(svgNS, "path");
-        path.setAttribute("d", "M0,0 L0,6 L9,3 z");
-        path.setAttribute("fill", "#f00");
-        marker.appendChild(path);
-        defs.appendChild(marker);
-
-        // Ground Line
-        const groundY = 350;
-        const ground = document.createElementNS(svgNS, "line");
-        ground.setAttribute("x1", "0");
-        ground.setAttribute("y1", groundY);
-        ground.setAttribute("x2", "800");
-        ground.setAttribute("y2", groundY);
-        ground.setAttribute("stroke", "#333");
-        ground.setAttribute("stroke-width", "2");
-        svg.appendChild(ground);
-
-        // Sensor
-        const sensorX = 100;
-        const sensorY = groundY;
-        const sensorGroup = document.createElementNS(svgNS, "g");
-        sensorGroup.setAttribute("transform", `translate(${sensorX}, ${sensorY}) rotate(-45)`); 
-        const sensorRect = document.createElementNS(svgNS, "rect");
-        sensorRect.setAttribute("x", "-20");
-        sensorRect.setAttribute("y", "-10");
-        sensorRect.setAttribute("width", "40");
-        sensorRect.setAttribute("height", "20");
-        sensorRect.setAttribute("fill", "#0056b3");
-        sensorRect.setAttribute("stroke", "#333");
-        sensorGroup.appendChild(sensorRect);
-        svg.appendChild(sensorGroup);
-
-        // Laser Beam
-        const laser = document.createElementNS(svgNS, "line");
-        laser.setAttribute("x1", sensorX);
-        laser.setAttribute("y1", sensorY);
-        laser.setAttribute("stroke", "red");
-        laser.setAttribute("stroke-width", "2");
-        laser.setAttribute("stroke-dasharray", "5,5");
-        svg.appendChild(laser);
-
-        // Vertical Line (Height)
-        const vertLine = document.createElementNS(svgNS, "line");
-        vertLine.setAttribute("stroke", "#0056b3");
-        vertLine.setAttribute("stroke-width", "2");
-        vertLine.setAttribute("stroke-dasharray", "4,4");
-        vertLine.setAttribute("display", "none");
-        svg.appendChild(vertLine);
-
-        // Base Line (Distance)
-        const baseLine = document.createElementNS(svgNS, "line");
-        baseLine.setAttribute("stroke", "#0056b3");
-        baseLine.setAttribute("stroke-width", "2");
-        baseLine.setAttribute("stroke-dasharray", "4,4");
-        baseLine.setAttribute("display", "none");
-        svg.appendChild(baseLine);
-
-        // Objects
-        const box1 = document.createElementNS(svgNS, "rect");
-        box1.setAttribute("fill", "#28a745");
-        box1.setAttribute("stroke", "#333");
-        box1.setAttribute("cursor", "ew-resize");
-        svg.appendChild(box1);
-
-        const box2 = document.createElementNS(svgNS, "rect");
-        box2.setAttribute("fill", "#dc3545");
-        box2.setAttribute("stroke", "#333");
-        box2.setAttribute("cursor", "ew-resize");
-        svg.appendChild(box2);
-
-        // Text Labels
-        const textInfo = document.createElementNS(svgNS, "text");
-        textInfo.setAttribute("x", "50");
-        textInfo.setAttribute("y", "50");
-        textInfo.setAttribute("fill", "#333");
-        textInfo.setAttribute("font-size", "16");
-        textInfo.setAttribute("font-weight", "bold");
-        svg.appendChild(textInfo);
-
-        const helpText = document.createElementNS(svgNS, "text");
-        helpText.setAttribute("x", "400");
-        helpText.setAttribute("y", "380");
-        helpText.setAttribute("text-anchor", "middle");
-        helpText.setAttribute("fill", "#666");
-        helpText.setAttribute("font-size", "14");
-        helpText.textContent = "Drag the boxes into the laser beam";
-        svg.appendChild(helpText);
-
-        const objects = [
-            { el: box1, x: 550, w: 80, h: 100 },
-            { el: box2, x: 680, w: 80, h: 180 }
+        const steps = [
+            { cls: 'step-decide',    text: '[Decision Level 1] Decide: x\u2081 = TRUE' },
+            { cls: 'step-propagate', text: '[BCP] C2=(\u00ACx\u2081 \u2228 x\u2083): x\u2081=T forces x\u2083 = TRUE' },
+            { cls: 'step-propagate', text: '[BCP] C3=(\u00ACx\u2082 \u2228 \u00ACx\u2083): x\u2083=T \u2192 watching, no unit yet' },
+            { cls: 'step-decide',    text: '[Decision Level 2] Decide: x\u2082 = TRUE' },
+            { cls: 'step-propagate', text: '[BCP] C3=(\u00ACx\u2082 \u2228 \u00ACx\u2083): x\u2082=T, x\u2083=T \u2192 all literals FALSE!' },
+            { cls: 'step-conflict',  text: '[CONFLICT] Clause C3 is violated!' },
+            { cls: 'step-info',      text: '[Analyze] Implication graph: x\u2081=T@1 \u2192 x\u2083=T@1, x\u2082=T@2 \u2192 conflict' },
+            { cls: 'step-info',      text: '[1-UIP] First Unique Implication Point found at x\u2082' },
+            { cls: 'step-learn',     text: '[Learn] Learned clause C5 = (\u00ACx\u2082)   \u2190 prevents x\u2082=T when x\u2081=T' },
+            { cls: 'step-backtrack', text: '[Backjump] Non-chronological backtrack to level 0 (assertion level)' },
+            { cls: 'step-propagate', text: '[BCP] C5=(\u00ACx\u2082) \u2192 forces x\u2082 = FALSE at level 0' },
+            { cls: 'step-propagate', text: '[BCP] C4=(x\u2082 \u2228 x\u2083): x\u2082=F \u2192 forces x\u2083 = TRUE at level 0' },
+            { cls: 'step-propagate', text: '[BCP] C1=(x\u2081 \u2228 x\u2082): x\u2082=F \u2192 forces x\u2081 = TRUE at level 0' },
+            { cls: 'step-propagate', text: '[Check] C2=(\u00ACx\u2081 \u2228 x\u2083): x\u2081=T, x\u2083=T \u2192 satisfied \u2713' },
+            { cls: 'step-propagate', text: '[Check] C3=(\u00ACx\u2082 \u2228 \u00ACx\u2083): x\u2082=F \u2192 satisfied \u2713' },
+            { cls: 'step-sat',       text: '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550' },
+            { cls: 'step-sat',       text: 'SATISFIABLE  \u2192  x\u2081 = TRUE, x\u2082 = FALSE, x\u2083 = TRUE' },
+            { cls: 'step-sat',       text: '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550' },
         ];
 
-        let displayState = 'searching';
-        let holdEndTime = 0;
-        let heldData = null;
-        let draggingObj = null;
-        let dragStartX = 0;
-        let objStartX = 0;
+        let currentStep = 0;
+        let autoInterval = null;
+        const initialHTML = log.innerHTML;
 
-        function getSvgX(evt) {
-            const pt = svg.createSVGPoint();
-            pt.x = evt.clientX || evt.touches[0].clientX;
-            pt.y = evt.clientY || evt.touches[0].clientY;
-            return pt.matrixTransform(svg.getScreenCTM().inverse()).x;
+        function addStep() {
+            if (currentStep >= steps.length) {
+                btnStep.disabled = true;
+                stopAuto();
+                return;
+            }
+            const s = steps[currentStep];
+            log.innerHTML += '\n<span class="' + s.cls + '">' + s.text + '</span>';
+            log.scrollTop = log.scrollHeight;
+            currentStep++;
         }
 
-        function startDrag(evt, obj) {
-            draggingObj = obj;
-            dragStartX = getSvgX(evt);
-            objStartX = obj.x;
+        function stopAuto() {
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+                btnAuto.textContent = 'Auto';
+            }
         }
 
-        objects.forEach(obj => {
-            obj.el.addEventListener('mousedown', (e) => startDrag(e, obj));
-            obj.el.addEventListener('touchstart', (e) => startDrag(e, obj));
-        });
+        function resetDemo() {
+            stopAuto();
+            currentStep = 0;
+            log.innerHTML = initialHTML;
+            btnStep.disabled = false;
+        }
 
-        window.addEventListener('mousemove', (e) => {
-            if (draggingObj) {
-                const currentX = getSvgX(e);
-                const dx = currentX - dragStartX;
-                draggingObj.x = objStartX + dx;
-                if (draggingObj.x < 0) draggingObj.x = 0;
-                if (draggingObj.x > 720) draggingObj.x = 720;
-            }
-        });
+        btnStep.addEventListener('click', addStep);
 
-        window.addEventListener('touchmove', (e) => {
-            if (draggingObj) {
-                const currentX = getSvgX(e);
-                const dx = currentX - dragStartX;
-                draggingObj.x = objStartX + dx;
-                if (draggingObj.x < 0) draggingObj.x = 0;
-                if (draggingObj.x > 720) draggingObj.x = 720;
-            }
-        });
-
-        window.addEventListener('mouseup', () => draggingObj = null);
-        window.addEventListener('touchend', () => draggingObj = null);
-
-        function animate(timestamp) {
-            if (!timestamp) timestamp = performance.now();
-
-            objects.forEach(obj => {
-                obj.el.setAttribute("x", obj.x);
-                obj.el.setAttribute("y", groundY - obj.h);
-                obj.el.setAttribute("width", obj.w);
-                obj.el.setAttribute("height", obj.h);
-            });
-
-            let closestHit = null;
-            
-            // Beam math: (x,y) from (100,350) angle -45.
-            // Equation: y - 350 = -1 * (x - 100)  => y = 450 - x
-            objects.forEach(obj => {
-                const beamY = 450 - obj.x;
-                const boxTop = groundY - obj.h;
-                const boxBottom = groundY;
-                
-                // Hit Left Side (Vertical wall check)
-                if (obj.x > 100 && beamY >= boxTop && beamY <= boxBottom) {
-                    if (!closestHit || obj.x < closestHit.x) {
-                        closestHit = { x: obj.x, y: beamY };
-                    }
-                }
-                
-                // Hit Top Side (Horizontal roof check)
-                // beam y = boxTop => boxTop = 450 - x => x = 450 - boxTop
-                const beamX = 450 - boxTop;
-                if (beamX >= obj.x && beamX <= obj.x + obj.w && beamX > 100) {
-                     if (!closestHit || beamX < closestHit.x) {
-                        closestHit = { x: beamX, y: boxTop };
-                     }
-                }
-            });
-
-            if (displayState === 'holding') {
-                if (timestamp > holdEndTime) {
-                    displayState = 'searching';
-                    heldData = null;
-                }
-            }
-
-            if (displayState === 'searching') {
-                if (closestHit) {
-                    displayState = 'holding';
-                    holdEndTime = timestamp + 5000;
-                    
-                    const hyp = Math.sqrt(Math.pow(closestHit.x - sensorX, 2) + Math.pow(closestHit.y - sensorY, 2));
-                    const height = groundY - closestHit.y;
-                    
-                    heldData = {
-                        x: closestHit.x,
-                        y: closestHit.y,
-                        hyp: Math.round(hyp),
-                        height: Math.round(height)
-                    };
-                }
-            }
-
-            if (displayState === 'holding' && heldData) {
-                laser.setAttribute("x2", heldData.x);
-                laser.setAttribute("y2", heldData.y);
-                laser.setAttribute("stroke-dasharray", "0");
-                laser.setAttribute("opacity", "1");
-
-                vertLine.setAttribute("x1", heldData.x);
-                vertLine.setAttribute("y1", heldData.y);
-                vertLine.setAttribute("x2", heldData.x);
-                vertLine.setAttribute("y2", groundY);
-                vertLine.setAttribute("display", "block");
-
-                baseLine.setAttribute("x1", sensorX);
-                baseLine.setAttribute("y1", groundY);
-                baseLine.setAttribute("x2", heldData.x);
-                baseLine.setAttribute("y2", groundY);
-                baseLine.setAttribute("display", "block");
-
-                textInfo.textContent = `Hyp: ${heldData.hyp} | Height: ${heldData.height} (HOLDING)`;
-                textInfo.setAttribute("fill", "#d63384");
+        btnAuto.addEventListener('click', () => {
+            if (autoInterval) {
+                stopAuto();
             } else {
-                laser.setAttribute("x2", sensorX + 400);
-                laser.setAttribute("y2", sensorY - 400);
-                laser.setAttribute("stroke-dasharray", "5,5");
-                laser.setAttribute("opacity", "0.5");
-
-                vertLine.setAttribute("display", "none");
-                baseLine.setAttribute("display", "none");
-
-                textInfo.textContent = "Searching...";
-                textInfo.setAttribute("fill", "#333");
+                btnAuto.textContent = 'Pause';
+                autoInterval = setInterval(() => {
+                    if (currentStep >= steps.length) {
+                        stopAuto();
+                        return;
+                    }
+                    addStep();
+                }, 800);
             }
+        });
 
-            requestAnimationFrame(animate);
-        }
-        requestAnimationFrame(animate);
-    }
-
-    window.onload = () => {
-        initMeasurementAnim();
-    };
+        btnReset.addEventListener('click', resetDemo);
+    })();
 </script>
 
 </body>
